@@ -38,14 +38,14 @@ class EncodeNet(nn.Module):
 
         self.conv_channels_up_1_128 = nn.Conv2d(1, 128, 1)
 
-        self.conv128_0 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv128_1 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv128_2 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv128_3 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv128_4 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv128_5 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv128_6 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv128_7 = nn.Conv2d(128, 128, 3, padding=1)
+        self.conv128_0 = nn.Conv2d(128, 128, 5, padding=2)
+        self.conv128_1 = nn.Conv2d(128, 128, 5, padding=2)
+        self.conv128_2 = nn.Conv2d(128, 128, 5, padding=2)
+        self.conv128_3 = nn.Conv2d(128, 128, 5, padding=2)
+        self.conv128_4 = nn.Conv2d(128, 128, 5, padding=2)
+        self.conv128_5 = nn.Conv2d(128, 128, 5, padding=2)
+        self.conv128_6 = nn.Conv2d(128, 128, 5, padding=2)
+        self.conv128_7 = nn.Conv2d(128, 128, 5, padding=2)
 
         self.bn128_0 = nn.BatchNorm2d(128)
         self.bn128_1 = nn.BatchNorm2d(128)
@@ -56,16 +56,21 @@ class EncodeNet(nn.Module):
         self.bn128_6 = nn.BatchNorm2d(128)
         self.bn128_7 = nn.BatchNorm2d(128)
 
+        self.bn_A_128_0 = nn.BatchNorm2d(128)
+        self.bn_A_128_1 = nn.BatchNorm2d(128)
+        self.bn_A_128_2 = nn.BatchNorm2d(128)
+        self.bn_A_128_3 = nn.BatchNorm2d(128)
+
         self.conv_channels_down_128_64 = nn.Conv2d(128, 64, 1)
 
-        self.conv64_0 = nn.Conv2d(64, 64, 3, padding=1)
-        self.conv64_1 = nn.Conv2d(64, 64, 3, padding=1)
-        self.conv64_2 = nn.Conv2d(64, 64, 3, padding=1)
-        self.conv64_3 = nn.Conv2d(64, 64, 3, padding=1)
-        self.conv64_4 = nn.Conv2d(64, 64, 3, padding=1)
-        self.conv64_5 = nn.Conv2d(64, 64, 3, padding=1)
-        self.conv64_6 = nn.Conv2d(64, 64, 3, padding=1)
-        self.conv64_7 = nn.Conv2d(64, 64, 3, padding=1)
+        self.conv64_0 = nn.Conv2d(64, 64, 5, padding=2)
+        self.conv64_1 = nn.Conv2d(64, 64, 5, padding=2)
+        self.conv64_2 = nn.Conv2d(64, 64, 5, padding=2)
+        self.conv64_3 = nn.Conv2d(64, 64, 5, padding=2)
+        self.conv64_4 = nn.Conv2d(64, 64, 5, padding=2)
+        self.conv64_5 = nn.Conv2d(64, 64, 5, padding=2)
+        self.conv64_6 = nn.Conv2d(64, 64, 5, padding=2)
+        self.conv64_7 = nn.Conv2d(64, 64, 5, padding=2)
 
         self.bn64_0 = nn.BatchNorm2d(64)
         self.bn64_1 = nn.BatchNorm2d(64)
@@ -76,16 +81,21 @@ class EncodeNet(nn.Module):
         self.bn64_6 = nn.BatchNorm2d(64)
         self.bn64_7 = nn.BatchNorm2d(64)
 
+        self.bn_A_64_0 = nn.BatchNorm2d(64)
+        self.bn_A_64_1 = nn.BatchNorm2d(64)
+        self.bn_A_64_2 = nn.BatchNorm2d(64)
+        self.bn_A_64_3 = nn.BatchNorm2d(64)
+
         self.conv_channels_down_64_32 = nn.Conv2d(64, 32, 1)
 
-        self.conv32_0 = nn.Conv2d(32, 32, 3, padding=1)
-        self.conv32_1 = nn.Conv2d(32, 32, 3, padding=1)
-        self.conv32_2 = nn.Conv2d(32, 32, 3, padding=1)
-        self.conv32_3 = nn.Conv2d(32, 32, 3, padding=1)
-        self.conv32_4 = nn.Conv2d(32, 32, 3, padding=1)
-        self.conv32_5 = nn.Conv2d(32, 32, 3, padding=1)
-        self.conv32_6 = nn.Conv2d(32, 32, 3, padding=1)
-        self.conv32_7 = nn.Conv2d(32, 32, 3, padding=1)
+        self.conv32_0 = nn.Conv2d(32, 32, 5, padding=2)
+        self.conv32_1 = nn.Conv2d(32, 32, 5, padding=2)
+        self.conv32_2 = nn.Conv2d(32, 32, 5, padding=2)
+        self.conv32_3 = nn.Conv2d(32, 32, 5, padding=2)
+        self.conv32_4 = nn.Conv2d(32, 32, 5, padding=2)
+        self.conv32_5 = nn.Conv2d(32, 32, 5, padding=2)
+        self.conv32_6 = nn.Conv2d(32, 32, 5, padding=2)
+        self.conv32_7 = nn.Conv2d(32, 32, 5, padding=2)
 
         self.bn32_0 = nn.BatchNorm2d(32)
         self.bn32_1 = nn.BatchNorm2d(32)
@@ -95,6 +105,12 @@ class EncodeNet(nn.Module):
         self.bn32_5 = nn.BatchNorm2d(32)
         self.bn32_6 = nn.BatchNorm2d(32)
         self.bn32_7 = nn.BatchNorm2d(32)
+
+        self.bn_A_32_0 = nn.BatchNorm2d(32)
+        self.bn_A_32_1 = nn.BatchNorm2d(32)
+        self.bn_A_32_2 = nn.BatchNorm2d(32)
+        self.bn_A_32_3 = nn.BatchNorm2d(32)
+
 
 
     def forward(self, x):
@@ -106,29 +122,53 @@ class EncodeNet(nn.Module):
 
         # -------------------------------------
         # n*128*256*256 多层卷积
+        xA = self.bn_A_128_0(x)
+
         x = F.leaky_relu(self.conv128_0(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn128_0(x)
 
         x = F.leaky_relu(self.conv128_1(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn128_1(x)
 
+        x = x + xA
+
+        xA = self.bn_A_128_1(x)
+
         x = F.leaky_relu(self.conv128_2(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn128_2(x)
 
         x = F.leaky_relu(self.conv128_3(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn128_3(x)
 
+        x = x + xA
+
+        xA = self.bn_A_128_2(x)
+
         x = F.leaky_relu(self.conv128_4(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn128_4(x)
 
         x = F.leaky_relu(self.conv128_5(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn128_5(x)
 
+        x = x + xA
+
+        xA = self.bn_A_128_3(x)
+
         x = F.leaky_relu(self.conv128_6(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn128_6(x)
 
         x = F.leaky_relu(self.conv128_7(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn128_7(x)
+
+        x = x + xA
         # -------------------------------------
 
         # -------------------------------------
@@ -138,29 +178,53 @@ class EncodeNet(nn.Module):
 
         # -------------------------------------
         # n*64*256*256 多层卷积
+        xA = self.bn_A_64_0(x)
+
         x = F.leaky_relu(self.conv64_0(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn64_0(x)
 
         x = F.leaky_relu(self.conv64_1(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn64_1(x)
 
+        x = x + xA
+
+        xA = self.bn_A_64_1(x)
+
         x = F.leaky_relu(self.conv64_2(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn64_2(x)
 
         x = F.leaky_relu(self.conv64_3(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn64_3(x)
 
+        x = x + xA
+
+        xA = self.bn_A_64_2(x)
+
         x = F.leaky_relu(self.conv64_4(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn64_4(x)
 
         x = F.leaky_relu(self.conv64_5(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn64_5(x)
 
+        x = x + xA
+
+        xA = self.bn_A_64_3(x)
+
         x = F.leaky_relu(self.conv64_6(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn64_6(x)
 
         x = F.leaky_relu(self.conv64_7(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn64_7(x)
+
+        x = x + xA
         # -------------------------------------
 
         # -------------------------------------
@@ -170,29 +234,53 @@ class EncodeNet(nn.Module):
 
         # -------------------------------------
         # n*32*256*256 多层卷积
+        xA = self.bn_A_32_0(x)
+
         x = F.leaky_relu(self.conv32_0(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn32_0(x)
 
         x = F.leaky_relu(self.conv32_1(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn32_1(x)
 
+        x = x + xA
+
+        xA = self.bn_A_32_1(x)
+
         x = F.leaky_relu(self.conv32_2(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn32_2(x)
 
         x = F.leaky_relu(self.conv32_3(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn32_3(x)
 
+        x = x + xA
+
+        xA = self.bn_A_32_2(x)
+
         x = F.leaky_relu(self.conv32_4(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn32_4(x)
 
         x = F.leaky_relu(self.conv32_5(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn32_5(x)
 
+        x = x + xA
+
+        xA = self.bn_A_32_3(x)
+
         x = F.leaky_relu(self.conv32_6(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn32_6(x)
 
         x = F.leaky_relu(self.conv32_7(x))
+        x = x / (torch.norm(x) + 1e-9)
         x = self.bn32_7(x)
+
+        x = x + xA
         # -------------------------------------
 
 
@@ -202,14 +290,14 @@ class DecodeNet(nn.Module):
     def __init__(self):
         super(DecodeNet, self).__init__()
 
-        self.tconv32_0 = nn.ConvTranspose2d(32, 32, 3, padding=1)
-        self.tconv32_1 = nn.ConvTranspose2d(32, 32, 3, padding=1)
-        self.tconv32_2 = nn.ConvTranspose2d(32, 32, 3, padding=1)
-        self.tconv32_3 = nn.ConvTranspose2d(32, 32, 3, padding=1)
-        self.tconv32_4 = nn.ConvTranspose2d(32, 32, 3, padding=1)
-        self.tconv32_5 = nn.ConvTranspose2d(32, 32, 3, padding=1)
-        self.tconv32_6 = nn.ConvTranspose2d(32, 32, 3, padding=1)
-        self.tconv32_7 = nn.ConvTranspose2d(32, 32, 3, padding=1)
+        self.tconv32_0 = nn.ConvTranspose2d(32, 32, 5, padding=2)
+        self.tconv32_1 = nn.ConvTranspose2d(32, 32, 5, padding=2)
+        self.tconv32_2 = nn.ConvTranspose2d(32, 32, 5, padding=2)
+        self.tconv32_3 = nn.ConvTranspose2d(32, 32, 5, padding=2)
+        self.tconv32_4 = nn.ConvTranspose2d(32, 32, 5, padding=2)
+        self.tconv32_5 = nn.ConvTranspose2d(32, 32, 5, padding=2)
+        self.tconv32_6 = nn.ConvTranspose2d(32, 32, 5, padding=2)
+        self.tconv32_7 = nn.ConvTranspose2d(32, 32, 5, padding=2)
 
         self.bn32_0 = nn.BatchNorm2d(32)
         self.bn32_1 = nn.BatchNorm2d(32)
@@ -220,16 +308,21 @@ class DecodeNet(nn.Module):
         self.bn32_6 = nn.BatchNorm2d(32)
         self.bn32_7 = nn.BatchNorm2d(32)
 
+        self.bn_A_32_0 = nn.BatchNorm2d(32)
+        self.bn_A_32_1 = nn.BatchNorm2d(32)
+        self.bn_A_32_2 = nn.BatchNorm2d(32)
+        self.bn_A_32_3 = nn.BatchNorm2d(32)
+
         self.tconv_channels_up_32_64 = nn.ConvTranspose2d(32, 64, 1)
 
-        self.tconv64_0 = nn.ConvTranspose2d(64, 64, 3, padding=1)
-        self.tconv64_1 = nn.ConvTranspose2d(64, 64, 3, padding=1)
-        self.tconv64_2 = nn.ConvTranspose2d(64, 64, 3, padding=1)
-        self.tconv64_3 = nn.ConvTranspose2d(64, 64, 3, padding=1)
-        self.tconv64_4 = nn.ConvTranspose2d(64, 64, 3, padding=1)
-        self.tconv64_5 = nn.ConvTranspose2d(64, 64, 3, padding=1)
-        self.tconv64_6 = nn.ConvTranspose2d(64, 64, 3, padding=1)
-        self.tconv64_7 = nn.ConvTranspose2d(64, 64, 3, padding=1)
+        self.tconv64_0 = nn.ConvTranspose2d(64, 64, 5, padding=2)
+        self.tconv64_1 = nn.ConvTranspose2d(64, 64, 5, padding=2)
+        self.tconv64_2 = nn.ConvTranspose2d(64, 64, 5, padding=2)
+        self.tconv64_3 = nn.ConvTranspose2d(64, 64, 5, padding=2)
+        self.tconv64_4 = nn.ConvTranspose2d(64, 64, 5, padding=2)
+        self.tconv64_5 = nn.ConvTranspose2d(64, 64, 5, padding=2)
+        self.tconv64_6 = nn.ConvTranspose2d(64, 64, 5, padding=2)
+        self.tconv64_7 = nn.ConvTranspose2d(64, 64, 5, padding=2)
 
         self.bn64_0 = nn.BatchNorm2d(64)
         self.bn64_1 = nn.BatchNorm2d(64)
@@ -240,16 +333,21 @@ class DecodeNet(nn.Module):
         self.bn64_6 = nn.BatchNorm2d(64)
         self.bn64_7 = nn.BatchNorm2d(64)
 
+        self.bn_A_64_0 = nn.BatchNorm2d(64)
+        self.bn_A_64_1 = nn.BatchNorm2d(64)
+        self.bn_A_64_2 = nn.BatchNorm2d(64)
+        self.bn_A_64_3 = nn.BatchNorm2d(64)
+
         self.tconv_channels_up_64_128 = nn.Conv2d(64, 128, 1)
 
-        self.tconv128_0 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv128_1 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv128_2 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv128_3 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv128_4 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv128_5 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv128_6 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv128_7 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+        self.tconv128_0 = nn.ConvTranspose2d(128, 128, 5, padding=2)
+        self.tconv128_1 = nn.ConvTranspose2d(128, 128, 5, padding=2)
+        self.tconv128_2 = nn.ConvTranspose2d(128, 128, 5, padding=2)
+        self.tconv128_3 = nn.ConvTranspose2d(128, 128, 5, padding=2)
+        self.tconv128_4 = nn.ConvTranspose2d(128, 128, 5, padding=2)
+        self.tconv128_5 = nn.ConvTranspose2d(128, 128, 5, padding=2)
+        self.tconv128_6 = nn.ConvTranspose2d(128, 128, 5, padding=2)
+        self.tconv128_7 = nn.ConvTranspose2d(128, 128, 5, padding=2)
 
         self.bn128_0 = nn.BatchNorm2d(128)
         self.bn128_1 = nn.BatchNorm2d(128)
@@ -260,6 +358,11 @@ class DecodeNet(nn.Module):
         self.bn128_6 = nn.BatchNorm2d(128)
         self.bn128_7 = nn.BatchNorm2d(128)
 
+        self.bn_A_128_0 = nn.BatchNorm2d(128)
+        self.bn_A_128_1 = nn.BatchNorm2d(128)
+        self.bn_A_128_2 = nn.BatchNorm2d(128)
+        self.bn_A_128_3 = nn.BatchNorm2d(128)
+
         self.tconv_channels_down_128_1 = nn.ConvTranspose2d(128, 1, 1)
 
 
@@ -268,29 +371,53 @@ class DecodeNet(nn.Module):
 
         # -------------------------------------
         # n*32*256*256 多层卷积
+        xA = self.bn_A_32_0(x)
+
         x = F.leaky_relu(self.tconv32_0(x))
+        x = x * torch.norm(x)
         x = self.bn32_0(x)
 
         x = F.leaky_relu(self.tconv32_1(x))
+        x = x * torch.norm(x)
         x = self.bn32_1(x)
 
+        x = x + xA
+
+        xA = self.bn_A_32_1(x)
+
         x = F.leaky_relu(self.tconv32_2(x))
+        x = x * torch.norm(x)
         x = self.bn32_2(x)
 
         x = F.leaky_relu(self.tconv32_3(x))
+        x = x * torch.norm(x)
         x = self.bn32_3(x)
 
+        x = x + xA
+
+        xA = self.bn_A_32_2(x)
+
         x = F.leaky_relu(self.tconv32_4(x))
+        x = x * torch.norm(x)
         x = self.bn32_4(x)
 
         x = F.leaky_relu(self.tconv32_5(x))
+        x = x * torch.norm(x)
         x = self.bn32_5(x)
 
+        x = x + xA
+
+        xA = self.bn_A_32_3(x)
+
         x = F.leaky_relu(self.tconv32_6(x))
+        x = x * torch.norm(x)
         x = self.bn32_6(x)
 
         x = F.leaky_relu(self.tconv32_7(x))
+        x = x * torch.norm(x)
         x = self.bn32_7(x)
+
+        x = x + xA
         # -------------------------------------
 
         # -------------------------------------
@@ -300,29 +427,53 @@ class DecodeNet(nn.Module):
 
         # -------------------------------------
         # n*64*256*256 多层卷积
+        xA = self.bn_A_64_0(x)
+
         x = F.leaky_relu(self.tconv64_0(x))
+        x = x * torch.norm(x)
         x = self.bn64_0(x)
 
         x = F.leaky_relu(self.tconv64_1(x))
+        x = x * torch.norm(x)
         x = self.bn64_1(x)
 
+        x = x + xA
+
+        xA = self.bn_A_64_1(x)
+
         x = F.leaky_relu(self.tconv64_2(x))
+        x = x * torch.norm(x)
         x = self.bn64_2(x)
 
         x = F.leaky_relu(self.tconv64_3(x))
+        x = x * torch.norm(x)
         x = self.bn64_3(x)
 
+        x = x + xA
+
+        xA = self.bn_A_64_2(x)
+
         x = F.leaky_relu(self.tconv64_4(x))
+        x = x * torch.norm(x)
         x = self.bn64_4(x)
 
         x = F.leaky_relu(self.tconv64_5(x))
+        x = x * torch.norm(x)
         x = self.bn64_5(x)
 
+        x = x + xA
+
+        xA = self.bn_A_64_3(x)
+
         x = F.leaky_relu(self.tconv64_6(x))
+        x = x * torch.norm(x)
         x = self.bn64_6(x)
 
         x = F.leaky_relu(self.tconv64_7(x))
+        x = x * torch.norm(x)
         x = self.bn64_7(x)
+
+        x = x + xA
         # -------------------------------------
 
         # -------------------------------------
@@ -332,29 +483,53 @@ class DecodeNet(nn.Module):
 
         # -------------------------------------
         # n*128*256*256 多层卷积
+        xA = self.bn_A_128_0(x)
+
         x = F.leaky_relu(self.tconv128_0(x))
+        x = x * torch.norm(x)
         x = self.bn128_0(x)
 
         x = F.leaky_relu(self.tconv128_1(x))
+        x = x * torch.norm(x)
         x = self.bn128_1(x)
 
+        x = x + xA
+
+        xA = self.bn_A_128_1(x)
+
         x = F.leaky_relu(self.tconv128_2(x))
+        x = x * torch.norm(x)
         x = self.bn128_2(x)
 
         x = F.leaky_relu(self.tconv128_3(x))
+        x = x * torch.norm(x)
         x = self.bn128_3(x)
 
+        x = x + xA
+
+        xA = self.bn_A_128_2(x)
+
         x = F.leaky_relu(self.tconv128_4(x))
+        x = x * torch.norm(x)
         x = self.bn128_4(x)
 
         x = F.leaky_relu(self.tconv128_5(x))
+        x = x * torch.norm(x)
         x = self.bn128_5(x)
 
+        x = x + xA
+
+        xA = self.bn_A_128_3(x)
+
         x = F.leaky_relu(self.tconv128_6(x))
+        x = x * torch.norm(x)
         x = self.bn128_6(x)
 
         x = F.leaky_relu(self.tconv128_7(x))
+        x = x * torch.norm(x)
         x = self.bn128_7(x)
+
+        x = x + xA
         # -------------------------------------
 
         # -------------------------------------
@@ -487,6 +662,8 @@ for i in range(int(sys.argv[4])):
 
         loss.backward()
         optimizer.step()
+        print(j,' ',end='')
+        sys.stdout.flush()
 
     if (i == 0):
         minLoss = maxLossOfTrainData
@@ -501,7 +678,7 @@ for i in range(int(sys.argv[4])):
             torch.save(decNet, './models/decNet_' + sys.argv[5] + '.pkl')
             print('save ./models/' + sys.argv[5] + '.pkl')
 
-    print(sys.argv)
+    print(sys.argv,end='\n')
     print(i)
     print('本次训练最大loss=',maxLossOfTrainData.item(),'SSIM=',maxLossTrainSL.item(),'EL=',maxLossTrainEL.item())
     print('minLoss=',minLoss.item(),'SSIM=',minLossSL.item(),'EL=',minLossEL.item())
