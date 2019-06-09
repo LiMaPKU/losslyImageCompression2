@@ -8,7 +8,7 @@ import torch.optim
 import sys
 import os
 import pytorch_ssim
-
+# minLoss= -0.607427179813385 MSEL= 263.4966735839844 SSIM= 0.607427179813385 EL= 0.0
 # 导入信息熵损失
 from torch.utils.cpp_extension import load
 entropy_loss_cuda = load(
@@ -550,8 +550,6 @@ class DecodeNet(nn.Module):
 
 
 
-
-
 '''
 argv:
 1: 使用哪个显卡
@@ -574,7 +572,7 @@ if(len(sys.argv)!=7):
 torch.cuda.set_device(int(sys.argv[1])) # 设置使用哪个显卡
 imgNum = os.listdir('./256bmp').__len__()
 imgData = numpy.empty([imgNum,1,256,256])
-laplacianData = numpy.empty([imgNum,1,256,256])
+
 for i in range(imgNum):
     img = Image.open('./256bmp/' + str(i) + '.bmp').convert('L')
     imgData[i] = numpy.asarray(img).astype(float).reshape([1,256,256])
@@ -596,8 +594,9 @@ print(decNet)
 
 
 SSIMLoss = pytorch_ssim.SSIM()
+MSELoss = nn.MSELoss()
 
-ssimLambda =  float(sys.argv[6])
+ssimLambda = float(sys.argv[6])
 
 optimizer = torch.optim.Adam([{'params':encNet.parameters()},{'params':decNet.parameters()}], lr=float(sys.argv[3]))
 
@@ -631,11 +630,13 @@ for i in range(int(sys.argv[4])):
         qEncData = quantize(encData)
         decData = decNet(qEncData)
 
+        currentMSEL = MSELoss(trainData, decData)
         if(ssimLambda==0):
             minV = int(qEncData.min().item())
             maxV = int(qEncData.max().item())
             currentEL = entropyLoss(qEncData, minV, maxV)
             currentSL = torch.zeros_like(currentEL)
+
 
         elif(ssimLambda==1):
             currentSL = SSIMLoss(decData, trainData)
@@ -647,18 +648,23 @@ for i in range(int(sys.argv[4])):
             maxV = int(qEncData.max().item())
             currentEL = entropyLoss(qEncData, minV, maxV)
 
-        loss = -ssimLambda *currentSL + (1-ssimLambda) * currentEL
+        if(currentSL.item() < 0.5):
+            loss = currentMSEL
+        else:
+            loss = -ssimLambda *currentSL + (1-ssimLambda) * currentEL
         #print('ssim=', currentSL.item(), 'EL=',currentEL.item(),'loss=',loss.item())
         if(defMaxLossOfTrainData==0):
             maxLossOfTrainData = loss
             maxLossTrainSL = currentSL
             maxLossTrainEL = currentEL
+            maxLossTrainMSEL = currentMSEL
             defMaxLossOfTrainData = 1
         else:
             if(loss>maxLossOfTrainData):
                 maxLossOfTrainData = loss # 保存所有训练样本中的最大损失
                 maxLossTrainSL = currentSL
                 maxLossTrainEL = currentEL
+                maxLossTrainMSEL = currentMSEL
 
         loss.backward()
         optimizer.step()
@@ -669,22 +675,21 @@ for i in range(int(sys.argv[4])):
         minLoss = maxLossOfTrainData
         minLossSL = maxLossTrainSL
         minLossEL = maxLossTrainEL
+        minLossMSEL = maxLossTrainMSEL
     else:
         if (minLoss > maxLossOfTrainData):  # 保存最小loss对应的模型
             minLoss = maxLossOfTrainData
             minLossSL = maxLossTrainSL
             minLossEL = maxLossTrainEL
+            minLossMSEL = maxLossTrainMSEL
             torch.save(encNet, './models/encNet_' + sys.argv[5] + '.pkl')
             torch.save(decNet, './models/decNet_' + sys.argv[5] + '.pkl')
             print('save ./models/' + sys.argv[5] + '.pkl')
 
     print(sys.argv,end='\n')
     print(i)
-    print('本次训练最大loss=',maxLossOfTrainData.item(),'SSIM=',maxLossTrainSL.item(),'EL=',maxLossTrainEL.item())
-    print('minLoss=',minLoss.item(),'SSIM=',minLossSL.item(),'EL=',minLossEL.item())
-
-
-
+    print('本次训练最大loss=',maxLossOfTrainData.item(),'MSEL=',maxLossTrainMSEL.item(),'SSIM=',maxLossTrainSL.item(),'EL=',maxLossTrainEL.item())
+    print('minLoss=',minLoss.item(),'MSEL=',minLossMSEL.item(),'SSIM=',minLossSL.item(),'EL=',minLossEL.item())
 
 
 

@@ -29,7 +29,6 @@ class GDN(nn.Module):
 
     def __init__(self,
                  ch,
-                 device,
                  inverse=False,
                  beta_min=1e-6,
                  gamma_init=.1,
@@ -40,16 +39,16 @@ class GDN(nn.Module):
         self.gamma_init = gamma_init
         self.reparam_offset = torch.FloatTensor([reparam_offset])
 
-        self.build(ch, torch.device(device))
+        self.build(ch)
 
-    def build(self, ch, device):
+    def build(self, ch):
         self.pedestal = self.reparam_offset ** 2
         self.beta_bound = (self.beta_min + self.reparam_offset ** 2) ** .5
         self.gamma_bound = self.reparam_offset
 
         # Create beta param
         beta = torch.sqrt(torch.ones(ch) + self.pedestal)
-        self.beta = nn.Parameter(beta.to(device))
+        self.beta = nn.Parameter(beta.cuda())
 
         # Create gamma param
         eye = torch.eye(ch)
@@ -57,8 +56,8 @@ class GDN(nn.Module):
         g = g + self.pedestal
         gamma = torch.sqrt(g)
 
-        self.gamma = nn.Parameter(gamma.to(device))
-        self.pedestal = self.pedestal.to(device)
+        self.gamma = nn.Parameter(gamma.cuda())
+        self.pedestal = self.pedestal.cuda()
 
     def forward(self, inputs):
         unfold = False
