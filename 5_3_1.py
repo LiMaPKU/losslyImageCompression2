@@ -9,7 +9,11 @@ import sys
 import os
 import pytorch_ssim
 import pytorch_gdn
-#　minLoss= 304.766357421875 MSEL= 304.766357421875 SSIM= 0.416795551776886 EL= 0.0
+# minLoss= -0.8086290955543518 MSEL= 81.0630111694336 SSIM= 0.8086290955543518 EL= 0.0
+# minLoss= -0.8454305529594421 MSEL= 66.7684097290039 SSIM= 0.8454305529594421 EL= 0.0
+# minLoss= 82.12031555175781 MSEL= 82.12031555175781 SSIM= 0.5888485312461853 EL= 0.0
+# minLoss= -0.6088127493858337 MSEL= 89.69950103759766 SSIM= 0.6088127493858337 EL= 0.0
+# minLoss= -0.7993581295013428 MSEL= 99.73623657226562 SSIM= 0.7993581295013428 EL= 0.0
 # 导入信息熵损失
 from torch.utils.cpp_extension import load
 entropy_loss_cuda = load(
@@ -38,87 +42,91 @@ class EncodeNet(nn.Module):
     def __init__(self):
         super(EncodeNet, self).__init__()
 
-        self.conv0 = nn.Conv2d(1, 128, 9, padding=4)
+        self.conv_channels_up = nn.Conv2d(1, 128, 1)
 
-        self.conv_down_0 = nn.Conv2d(128, 128, 4, 4)  # 降采样
+        self.conv_down_256_16 = nn.Conv2d(128, 128, 16, 16)
+        self.conv_down_128_16 = nn.Conv2d(128, 128, 8, 8)
+        self.conv_down_64_16 = nn.Conv2d(128, 128, 4, 4)
+        self.conv_down_32_16 = nn.Conv2d(128, 128, 2, 2)
 
-        self.gdn128_0 = pytorch_gdn.GDN(128)
+        self.gdn_down_256_16 = pytorch_gdn.GDN(128)
+        self.gdn_down_128_16 = pytorch_gdn.GDN(128)
+        self.gdn_down_64_16 = pytorch_gdn.GDN(128)
+        self.gdn_down_32_16 = pytorch_gdn.GDN(128)
 
-        self.conv1 = nn.Conv2d(128, 128, 5, padding=2)
+        self.conv_down_256_128 = nn.Conv2d(128, 128, 2, 2)
+        self.conv_down_128_64 = nn.Conv2d(128, 128, 2, 2)
+        self.conv_down_64_32 = nn.Conv2d(128, 128, 2, 2)
 
-        self.conv_down_1 = nn.Conv2d(128, 128, 2, 2)  # 降采样
-
-        self.gdn128_1 = pytorch_gdn.GDN(128)
-
-        self.conv2 = nn.Conv2d(128, 128, 5, padding=2)
-
-        self.conv_down_2 = nn.Conv2d(128, 128, 2, 2)  # 降采样
-
-        self.gdn128_2 = pytorch_gdn.GDN(128)
-
+        self.gdn_down_256_128 = pytorch_gdn.GDN(128)
+        self.gdn_down_128_64 = pytorch_gdn.GDN(128)
+        self.gdn_down_64_32 = pytorch_gdn.GDN(128)
     def forward(self, x):
 
-        x = self.conv0(x)
+        # n*1*256*256 -> n*128*256*256
+        x1 = F.leaky_relu(self.conv_channels_up(x))
+        y1 = self.gdn_down_256_16(F.leaky_relu(self.conv_down_256_16(x1)))
 
-        x = self.conv_down_0(x)
+        x2 = self.gdn_down_256_128(F.leaky_relu(self.conv_down_256_128(x1)))
+        y2 = self.gdn_down_128_16(F.leaky_relu(self.conv_down_128_16(x2)))
 
-        x = self.gdn128_0(x)
+        x3 = self.gdn_down_128_64(F.leaky_relu(self.conv_down_128_64(x2)))
+        y3 = self.gdn_down_64_16(F.leaky_relu(self.conv_down_64_16(x3)))
 
-        x = self.conv1(x)
+        x4 = self.gdn_down_64_32(F.leaky_relu(self.conv_down_64_32(x3)))
+        y4 = self.gdn_down_32_16(F.leaky_relu(self.conv_down_32_16(x4)))
 
-        x = self.conv_down_1(x)
+        return y1 + y2 + y3 + y4 # n*128*16*16
 
-        x = self.gdn128_1(x)
 
-        x = self.conv2(x)
 
-        x = self.conv_down_2(x)
 
-        x = self.gdn128_2(x)
 
-        return x
+
 
 class DecodeNet(nn.Module):
     def __init__(self):
         super(DecodeNet, self).__init__()
 
-        self.tconv0 = nn.ConvTranspose2d(128, 1, 9, padding=4)
+        self.tconv_channels_down = nn.ConvTranspose2d(128, 1, 1)
 
-        self.tconv_up_0 = nn.ConvTranspose2d(128, 128, 4, 4)  # 升采样
+        self.tconv_up_16_256 = nn.ConvTranspose2d(128, 128, 16, 16)
+        self.tconv_up_16_128 = nn.ConvTranspose2d(128, 128, 8, 8)
+        self.tconv_up_16_64 = nn.ConvTranspose2d(128, 128, 4, 4)
+        self.tconv_up_16_32 = nn.ConvTranspose2d(128, 128, 2, 2)
 
-        self.igdn128_0 = pytorch_gdn.GDN(128, True)
+        self.igdn_up_16_256 = pytorch_gdn.GDN(128, True)
+        self.igdn_up_16_128 = pytorch_gdn.GDN(128, True)
+        self.igdn_up_16_64 = pytorch_gdn.GDN(128, True)
+        self.igdn_up_16_32 = pytorch_gdn.GDN(128, True)
 
-        self.tconv1 = nn.ConvTranspose2d(128, 128, 5, padding=2)
+        self.tconv_up_32_64 = nn.ConvTranspose2d(128, 128, 2, 2)
+        self.tconv_up_64_128 = nn.ConvTranspose2d(128, 128, 2, 2)
+        self.tconv_up_128_256 = nn.ConvTranspose2d(128, 128, 2, 2)
 
-        self.tconv_up_1 = nn.ConvTranspose2d(128, 128, 2, 2)  # 升采样
-
-        self.igdn128_1 = pytorch_gdn.GDN(128, True)
-
-        self.tconv2 = nn.ConvTranspose2d(128, 128, 5, padding=2)
-
-        self.tconv_up_2 = nn.ConvTranspose2d(128, 128, 2, 2)  # 升采样
-
-        self.igdn128_2 = pytorch_gdn.GDN(128, True)
+        self.igdn_up_32_64 = pytorch_gdn.GDN(128, True)
+        self.igdn_up_64_128 = pytorch_gdn.GDN(128, True)
+        self.igdn_up_128_256 = pytorch_gdn.GDN(128, True)
 
     def forward(self, x):
 
-        x = self.igdn128_2(x)
+        x4 = F.leaky_relu(self.tconv_up_16_32(self.igdn_up_16_32(x)))
 
-        x = self.tconv_up_2(x)
+        x3_ = F.leaky_relu(self.tconv_up_32_64(self.igdn_up_32_64(x4)))
 
-        x = self.tconv2(x)
+        x3 = F.leaky_relu(self.tconv_up_16_64(self.igdn_up_16_64(x)))
+        x3 = x3 + x3_
 
-        x = self.igdn128_1(x)
+        x2 = F.leaky_relu(self.tconv_up_16_128(self.igdn_up_16_128(x)))
+        x2_ = F.leaky_relu(self.tconv_up_64_128(self.igdn_up_64_128(x3)))
 
-        x = self.tconv_up_1(x)
+        x2 = x2 + x2_
 
-        x = self.tconv1(x)
+        x1_ = F.leaky_relu(self.tconv_up_128_256(self.igdn_up_128_256(x2)))
+        x1 = F.leaky_relu(self.tconv_up_16_256(self.igdn_up_16_256(x)))
+        x1 = x1 + x1_
 
-        x = self.igdn128_0(x)
-
-        x = self.tconv_up_0(x)
-
-        x = self.tconv0(x)
+        x = F.leaky_relu(self.tconv_channels_down(x1))
 
         return x
 
@@ -128,10 +136,7 @@ class DecodeNet(nn.Module):
 
 
 
-
-
-
-
+import bmpReader
 '''
 argv:
 1: 使用哪个显卡
@@ -141,24 +146,22 @@ argv:
 5: 保存的模型名字
 6: λ 训练目标是最小化loss = -λ*SSIM + (1-λ)EL
    增大λ 则训练目标向质量方向偏移
+7: batchSize
 '''
 
-if(len(sys.argv)!=7):
+if(len(sys.argv)!=8):
     print('1: 使用哪个显卡\n'
           '2: 为0则重新开始训练 否则读取之前的模型\n'
           '3: 学习率 Adam默认是1e-3\n'
           '4: 训练次数\n'
           '5: 保存的模型标号\n'
-          '6: lambda')
+          '6: λ 训练目标是最小化loss = -λ*SSIM + (1-λ)EL 增大λ 则训练目标向质量方向偏移\n'
+          '7: batchSize')
     exit(0)
+
+batchSize = int(sys.argv[7]) # 一次读取?张图片进行训练
+dReader = bmpReader.datasetReader(batchSize)
 torch.cuda.set_device(int(sys.argv[1])) # 设置使用哪个显卡
-imgNum = os.listdir('./256bmp').__len__()
-imgData = numpy.empty([imgNum,1,256,256])
-
-for i in range(imgNum):
-    img = Image.open('./256bmp/' + str(i) + '.bmp').convert('L')
-    imgData[i] = numpy.asarray(img).astype(float).reshape([1,256,256])
-
 
 
 
@@ -182,30 +185,18 @@ ssimLambda = float(sys.argv[6])
 
 optimizer = torch.optim.Adam([{'params':encNet.parameters()},{'params':decNet.parameters()}], lr=float(sys.argv[3]))
 
-batchSize = 16 # 一次读取?张图片进行训练
-imgData = torch.from_numpy(imgData).float().cuda()
 trainData = torch.empty([batchSize, 1, 256, 256]).float().cuda()
 
 
 
 for i in range(int(sys.argv[4])):
 
-    readSeq = torch.randperm(imgNum) # 生成读取的随机序列
-
-    j = 0
 
     defMaxLossOfTrainData = 0
 
-    while(1):
-        if(j==imgNum):
-            break
-        k = 0
-        while(1):
-            trainData[k] = imgData[readSeq[j]]
-            k = k + 1
-            j = j + 1
-            if(k==batchSize or j==imgNum):
-                break
+    for j in range(16): # 每16批 当作一个训练单元 统计这16批数据的表现
+        for k in range(batchSize):
+            trainData[k] = torch.from_numpy(dReader.readImg()).float().cuda()
 
         optimizer.zero_grad()
         encData = encNet(trainData)
@@ -230,7 +221,7 @@ for i in range(int(sys.argv[4])):
             maxV = int(qEncData.max().item())
             currentEL = entropyLoss(qEncData, minV, maxV)
 
-        if(currentSL.item() < 0.5):
+        if(currentMSEL > 1000 or currentSL < 0.6):
             loss = currentMSEL
         else:
             loss = -ssimLambda *currentSL + (1-ssimLambda) * currentEL
@@ -250,7 +241,7 @@ for i in range(int(sys.argv[4])):
 
         loss.backward()
         optimizer.step()
-        print(j,' ',end='')
+        print(j, ' ', end='')
         sys.stdout.flush()
 
     if (i == 0):
@@ -272,9 +263,6 @@ for i in range(int(sys.argv[4])):
     print(i)
     print('本次训练最大loss=',maxLossOfTrainData.item(),'MSEL=',maxLossTrainMSEL.item(),'SSIM=',maxLossTrainSL.item(),'EL=',maxLossTrainEL.item())
     print('minLoss=',minLoss.item(),'MSEL=',minLossMSEL.item(),'SSIM=',minLossSL.item(),'EL=',minLossEL.item())
-
-
-
 
 
 

@@ -9,12 +9,12 @@ import sys
 import os
 import pytorch_ssim
 import pytorch_gdn
-# minLoss= -0.5664932131767273 MSEL= 78.70614624023438 SSIM= 0.5664932131767273 EL= 0.0
-# minLoss= -0.5889261960983276 MSEL= 191.78775024414062 SSIM= 0.5889261960983276 EL= 0.0
-# minLoss= -0.6235981583595276 MSEL= 72.41802978515625 SSIM= 0.6235981583595276 EL= 0.0
-# minLoss= -0.6367703676223755 MSEL= 56.94683074951172 SSIM= 0.6367703676223755 EL= 0.0
-# minLoss= -0.6709020137786865 MSEL= 40.294921875 SSIM= 0.6709020137786865 EL= 0.0
-# minLoss= -0.6929290294647217 MSEL= 108.83416748046875 SSIM= 0.6929290294647217 EL= 0.0
+# minLoss= -0.8333975076675415 MSEL= 115.94562530517578 SSIM= 0.8333975076675415 EL= 0.0
+# 本次训练最大loss= -0.7649205327033997 MSEL= 54.226470947265625 SSIM= 0.7649205327033997 EL= 0.0
+# minLoss= -0.8682881593704224 MSEL= 121.96495056152344 SSIM= 0.8682881593704224 EL= 0.0
+# minLoss= -0.8724066019058228 MSEL= 83.49600219726562 SSIM= 0.8724066019058228 EL= 0.0
+# minLoss= -0.8982797861099243 MSEL= 41.8731689453125 SSIM= 0.8982797861099243 EL= 0.0
+
 # 导入信息熵损失
 from torch.utils.cpp_extension import load
 entropy_loss_cuda = load(
@@ -50,19 +50,11 @@ class EncodeNet(nn.Module):
         self.conv1_1 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv1_2 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv1_3 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv1_4 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv1_5 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv1_6 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv1_7 = nn.Conv2d(128, 128, 3, padding=1)
 
         self.conv2_0 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv2_1 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv2_2 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv2_3 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv2_4 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv2_5 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv2_6 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv2_7 = nn.Conv2d(128, 128, 3, padding=1)
 
         self.conv_g1 = nn.Conv2d(128, 128, 8, 8)
         self.conv_g2 = nn.Conv2d(128, 128, 4, 4)
@@ -88,14 +80,7 @@ class EncodeNet(nn.Module):
         x1 = F.leaky_relu(self.conv1_1(x1))
         x1 = F.leaky_relu(self.conv1_2(x1))
         x1 = F.leaky_relu(self.conv1_3(x1))
-        x1 = x1 + x1A
-
-        x1A = x1
-        x1 = F.leaky_relu(self.conv1_4(x1))
-        x1 = F.leaky_relu(self.conv1_5(x1))
-        x1 = F.leaky_relu(self.conv1_6(x1))
-        x1 = F.leaky_relu(self.conv1_7(x1))
-        x1 = x1 + x1A
+        x1 = x1 - x1A
 
         x2 = self.gdn_f1(F.leaky_relu(self.conv_f1(x1)))
         y2 = self.gdn_g2(F.leaky_relu(self.conv_g2(x2)))
@@ -105,14 +90,7 @@ class EncodeNet(nn.Module):
         x2 = F.leaky_relu(self.conv2_1(x2))
         x2 = F.leaky_relu(self.conv2_2(x2))
         x2 = F.leaky_relu(self.conv2_3(x2))
-        x2 = x2 + x2A
-
-        x2A = x2
-        x2 = F.leaky_relu(self.conv2_4(x2))
-        x2 = F.leaky_relu(self.conv2_5(x2))
-        x2 = F.leaky_relu(self.conv2_6(x2))
-        x2 = F.leaky_relu(self.conv2_7(x2))
-        x2 = x2 + x2A
+        x2 = x2 - x2A
 
         x3 = self.gdn_f2(F.leaky_relu(self.conv_f2(x2)))
         y3 = self.gdn_g3(F.leaky_relu(self.conv_g3(x3)))
@@ -132,19 +110,11 @@ class DecodeNet(nn.Module):
         self.tconv1_1 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv1_2 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv1_3 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv1_4 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv1_5 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv1_6 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv1_7 = nn.ConvTranspose2d(128, 128, 3, padding=1)
 
         self.tconv2_0 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv2_1 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv2_2 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv2_3 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv2_4 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv2_5 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv2_6 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv2_7 = nn.ConvTranspose2d(128, 128, 3, padding=1)
 
         self.tconv_g1 = nn.ConvTranspose2d(128, 128, 8, 8)
         self.tconv_g2 = nn.ConvTranspose2d(128, 128, 4, 4)
@@ -164,37 +134,21 @@ class DecodeNet(nn.Module):
 
         x3 = F.leaky_relu(self.tconv_g3(self.igdn_g3(x)))
         x3 = F.leaky_relu(self.tconv_f2(self.igdn_f2(x3)))
-
         x3A = x3
         x3 = F.leaky_relu(self.tconv2_0(x3))
         x3 = F.leaky_relu(self.tconv2_1(x3))
         x3 = F.leaky_relu(self.tconv2_2(x3))
         x3 = F.leaky_relu(self.tconv2_3(x3))
-        x3 = x3 + x3A
-
-        x3A = x3
-        x3 = F.leaky_relu(self.tconv2_4(x3))
-        x3 = F.leaky_relu(self.tconv2_5(x3))
-        x3 = F.leaky_relu(self.tconv2_6(x3))
-        x3 = F.leaky_relu(self.tconv2_7(x3))
-        x3 = x3 + x3A
+        x3 = x3 - x3A
 
         x2 = x3 + F.leaky_relu(self.tconv_g2(self.igdn_g2(x)))
         x2 = F.leaky_relu(self.tconv_f1(self.igdn_f1(x2)))
-
         x2A = x2
         x2 = F.leaky_relu(self.tconv1_0(x2))
         x2 = F.leaky_relu(self.tconv1_1(x2))
         x2 = F.leaky_relu(self.tconv1_2(x2))
         x2 = F.leaky_relu(self.tconv1_3(x2))
-        x2 = x2 + x2A
-
-        x2A = x2
-        x2 = F.leaky_relu(self.tconv1_4(x2))
-        x2 = F.leaky_relu(self.tconv1_5(x2))
-        x2 = F.leaky_relu(self.tconv1_6(x2))
-        x2 = F.leaky_relu(self.tconv1_7(x2))
-        x2 = x2 + x2A
+        x2 = x2 - x2A
 
         x1 = x2 + F.leaky_relu(self.tconv_g1(self.igdn_g1(x)))
 
@@ -341,7 +295,6 @@ for i in range(int(sys.argv[4])):
     print(i)
     print('本次训练最大loss=',maxLossOfTrainData.item(),'MSEL=',maxLossTrainMSEL.item(),'SSIM=',maxLossTrainSL.item(),'EL=',maxLossTrainEL.item())
     print('minLoss=',minLoss.item(),'MSEL=',minLossMSEL.item(),'SSIM=',minLossSL.item(),'EL=',minLossEL.item())
-
 
 
 

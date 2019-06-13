@@ -7,14 +7,9 @@ import torch.autograd
 import torch.optim
 import sys
 import os
-import pytorch_ssim
 import pytorch_gdn
-# minLoss= -0.8919838070869446 MSEL= 30.461572647094727 SSIM= 0.8919838070869446 EL= 0.0
-# minLoss= -0.8391619920730591 MSEL= 38.64547348022461 SSIM= 0.8391619920730591 EL= 0.0
-# minLoss= -0.8637346029281616 MSEL= 39.516624450683594 SSIM= 0.8637346029281616 EL= 0.0
-# minLoss= -0.6046683192253113 MSEL= 86.92843627929688 SSIM= 0.6046683192253113 EL= 0.0
-# minLoss= -0.6142460703849792 MSEL= 140.17283630371094 SSIM= 0.6142460703849792 EL= 0.0
-# minLoss= -0.633123517036438 MSEL= 80.04871368408203 SSIM= 0.633123517036438 EL= 0.0
+import pytorch_msssim
+
 # 导入信息熵损失
 from torch.utils.cpp_extension import load
 entropy_loss_cuda = load(
@@ -45,59 +40,41 @@ class EncodeNet(nn.Module):
 
         self.conv_channels_up = nn.Conv2d(1, 128, 1)
 
-        self.conv256_0 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv256_1 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv256_2 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv256_3 = nn.Conv2d(128, 128, 3, padding=1)
+        self.conv_down_256_16 = nn.Conv2d(128, 128, 16, 16)
+        self.conv_down_128_16 = nn.Conv2d(128, 128, 8, 8)
+        self.conv_down_64_16 = nn.Conv2d(128, 128, 4, 4)
+        self.conv_down_32_16 = nn.Conv2d(128, 128, 2, 2)
 
-        self.conv128_0 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv128_1 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv128_2 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv128_3 = nn.Conv2d(128, 128, 3, padding=1)
-
-        self.conv_down_256_32 = nn.Conv2d(128, 128, 8, 8)
-        self.conv_down_128_32 = nn.Conv2d(128, 128, 4, 4)
-        self.conv_down_64_32 = nn.Conv2d(128, 128, 2, 2)
-
-        self.gdn_down_256_32 = pytorch_gdn.GDN(128)
-        self.gdn_down_128_32 = pytorch_gdn.GDN(128)
-        self.gdn_down_64_32 = pytorch_gdn.GDN(128)
+        self.gdn_down_256_16 = pytorch_gdn.GDN(128)
+        self.gdn_down_128_16 = pytorch_gdn.GDN(128)
+        self.gdn_down_64_16 = pytorch_gdn.GDN(128)
+        self.gdn_down_32_16 = pytorch_gdn.GDN(128)
 
         self.conv_down_256_128 = nn.Conv2d(128, 128, 2, 2)
         self.conv_down_128_64 = nn.Conv2d(128, 128, 2, 2)
+        self.conv_down_64_32 = nn.Conv2d(128, 128, 2, 2)
+        self.conv_down_32_16 = nn.Conv2d(128, 128, 2, 2)
 
         self.gdn_down_256_128 = pytorch_gdn.GDN(128)
         self.gdn_down_128_64 = pytorch_gdn.GDN(128)
+        self.gdn_down_64_32 = pytorch_gdn.GDN(128)
+        self.gdn_down_32_16 = pytorch_gdn.GDN(128)
+
     def forward(self, x):
 
-        # n*1*256*256 -> n*128*256*256
         x1 = F.leaky_relu(self.conv_channels_up(x))
-        y1 = self.gdn_down_256_32(F.leaky_relu(self.conv_down_256_32(x1)))
+        y1 = self.gdn_down_256_16(F.leaky_relu(self.conv_down_256_16(x1)))
 
-        x1A_ = x1_ = x1
-        x1_ = F.leaky_relu(self.conv256_0(x1_))
-        x1_ = F.leaky_relu(self.conv256_1(x1_))
-        x1_ = F.leaky_relu(self.conv256_2(x1_))
-        x1_ = F.leaky_relu(self.conv256_3(x1_))
-        x1_ = x1_ + x1A_
+        x2 = self.gdn_down_256_128(F.leaky_relu(self.conv_down_256_128(x1)))
+        y2 = self.gdn_down_128_16(F.leaky_relu(self.conv_down_128_16(x2)))
 
-        x2 = self.gdn_down_256_128(F.leaky_relu(self.conv_down_256_128(x1_)))
-        y2 = self.gdn_down_128_32(F.leaky_relu(self.conv_down_128_32(x2)))
+        x3 = self.gdn_down_128_64(F.leaky_relu(self.conv_down_128_64(x2)))
+        y3 = self.gdn_down_64_16(F.leaky_relu(self.conv_down_64_16(x3)))
 
-        x2A_ = x2_ = x2
-        x2_ = F.leaky_relu(self.conv128_0(x2_))
-        x2_ = F.leaky_relu(self.conv128_1(x2_))
-        x2_ = F.leaky_relu(self.conv128_2(x2_))
-        x2_ = F.leaky_relu(self.conv128_3(x2_))
-        x2_ = x2_ + x2A_
+        x4 = self.gdn_down_64_32(F.leaky_relu(self.conv_down_64_32(x3)))
+        y4 = self.gdn_down_32_16(F.leaky_relu(self.conv_down_32_16(x4)))
 
-        x3 = self.gdn_down_128_64(F.leaky_relu(self.conv_down_128_64(x2_)))
-        y3 = self.gdn_down_64_32(F.leaky_relu(self.conv_down_64_32(x3)))
-
-
-
-
-        return y1 + y2 + y3 # n*128*32*32
+        return y1 + y2 + y3 + y4 # n*100*16*16
 
 
 
@@ -111,59 +88,43 @@ class DecodeNet(nn.Module):
 
         self.tconv_channels_down = nn.ConvTranspose2d(128, 1, 1)
 
-        self.tconv256_0 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv256_1 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv256_2 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv256_3 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+        self.tconv_up_16_256 = nn.ConvTranspose2d(128, 128, 16, 16)
+        self.tconv_up_16_128 = nn.ConvTranspose2d(128, 128, 8, 8)
+        self.tconv_up_16_64 = nn.ConvTranspose2d(128, 128, 4, 4)
+        self.tconv_up_16_32 = nn.ConvTranspose2d(128, 128, 2, 2)
 
-        self.tconv128_0 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv128_1 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv128_2 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv128_3 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+        self.igdn_up_16_256 = pytorch_gdn.GDN(128, True)
+        self.igdn_up_16_128 = pytorch_gdn.GDN(128, True)
+        self.igdn_up_16_64 = pytorch_gdn.GDN(128, True)
+        self.igdn_up_16_32 = pytorch_gdn.GDN(128, True)
 
-        self.tconv_up_32_256 = nn.ConvTranspose2d(128, 128, 8, 8)
-        self.tconv_up_32_128 = nn.ConvTranspose2d(128, 128, 4, 4)
         self.tconv_up_32_64 = nn.ConvTranspose2d(128, 128, 2, 2)
-
-        self.igdn_up_32_256 = pytorch_gdn.GDN(128, True)
-        self.igdn_up_32_128 = pytorch_gdn.GDN(128, True)
-        self.igdn_up_32_64 = pytorch_gdn.GDN(128, True)
-
         self.tconv_up_64_128 = nn.ConvTranspose2d(128, 128, 2, 2)
         self.tconv_up_128_256 = nn.ConvTranspose2d(128, 128, 2, 2)
 
+        self.igdn_up_32_64 = pytorch_gdn.GDN(128, True)
         self.igdn_up_64_128 = pytorch_gdn.GDN(128, True)
         self.igdn_up_128_256 = pytorch_gdn.GDN(128, True)
 
     def forward(self, x):
+        x4 = F.leaky_relu(self.tconv_up_16_32(self.igdn_up_16_32(x)))
 
-        x3 = F.leaky_relu(self.tconv_up_32_64(self.igdn_up_32_64(x)))
+        x3 = F.leaky_relu(self.tconv_up_16_64(self.igdn_up_16_64(x)))
+        x3_ = F.leaky_relu(self.tconv_up_32_64(self.igdn_up_32_64(x4)))
+        x3 = x3 + x3_
 
+        x2 = F.leaky_relu(self.tconv_up_16_128(self.igdn_up_16_128(x)))
         x2_ = F.leaky_relu(self.tconv_up_64_128(self.igdn_up_64_128(x3)))
-        x2A_ = x2_
-        x2_ = F.leaky_relu(self.tconv128_0(x2_))
-        x2_ = F.leaky_relu(self.tconv128_1(x2_))
-        x2_ = F.leaky_relu(self.tconv128_2(x2_))
-        x2_ = F.leaky_relu(self.tconv128_3(x2_))
-        x2_ = x2_ + x2A_
-
-        x2 = F.leaky_relu(self.tconv_up_32_128(self.igdn_up_32_128(x)))
         x2 = x2 + x2_
 
+        x1 = F.leaky_relu(self.tconv_up_16_256(self.igdn_up_16_256(x)))
         x1_ = F.leaky_relu(self.tconv_up_128_256(self.igdn_up_128_256(x2)))
-        x1A_ = x1_
-        x1_ = F.leaky_relu(self.tconv256_0(x1_))
-        x1_ = F.leaky_relu(self.tconv256_1(x1_))
-        x1_ = F.leaky_relu(self.tconv256_2(x1_))
-        x1_ = F.leaky_relu(self.tconv256_3(x1_))
-        x1_ = x1_ + x1A_
-
-        x1 = F.leaky_relu(self.tconv_up_32_256(self.igdn_up_32_256(x)))
         x1 = x1 + x1_
 
         x = F.leaky_relu(self.tconv_channels_down(x1))
 
         return x
+
 
 
 
@@ -178,7 +139,7 @@ argv:
 3: 学习率 Adam默认是1e-3
 4: 训练次数
 5: 保存的模型名字
-6: λ 训练目标是最小化loss = -λ*SSIM + (1-λ)EL
+6: λ 训练目标是最小化loss = λ*NLPL + (1-λ)EL
    增大λ 则训练目标向质量方向偏移
 7: batchSize
 '''
@@ -189,13 +150,15 @@ if(len(sys.argv)!=8):
           '3: 学习率 Adam默认是1e-3\n'
           '4: 训练次数\n'
           '5: 保存的模型标号\n'
-          '6: λ 训练目标是最小化loss = -λ*SSIM + (1-λ)EL 增大λ 则训练目标向质量方向偏移\n'
+          '6: λ 训练目标是最小化loss = λ*NLPL + (1-λ)EL 增大λ 则训练目标向质量方向偏移\n'
           '7: batchSize')
     exit(0)
 
 batchSize = int(sys.argv[7]) # 一次读取?张图片进行训练
 dReader = bmpReader.datasetReader(batchSize)
 torch.cuda.set_device(int(sys.argv[1])) # 设置使用哪个显卡
+import nlpDistance
+
 
 
 
@@ -212,10 +175,9 @@ print(encNet)
 print(decNet)
 
 
-SSIMLoss = pytorch_ssim.SSIM()
 MSELoss = nn.MSELoss()
 
-ssimLambda = float(sys.argv[6])
+NLPLLambda = float(sys.argv[6])
 
 optimizer = torch.optim.Adam([{'params':encNet.parameters()},{'params':decNet.parameters()}], lr=float(sys.argv[3]))
 
@@ -238,65 +200,77 @@ for i in range(int(sys.argv[4])):
         decData = decNet(qEncData)
 
         currentMSEL = MSELoss(trainData, decData)
-        if(ssimLambda==0):
+        if(NLPLLambda==0):
             minV = int(qEncData.min().item())
             maxV = int(qEncData.max().item())
             currentEL = entropyLoss(qEncData, minV, maxV)
-            currentSL = torch.zeros_like(currentEL)
+            currentNLPL = torch.zeros_like(currentEL)
 
 
-        elif(ssimLambda==1):
-            currentSL = SSIMLoss(decData, trainData)
-            currentEL = torch.zeros_like(currentSL)
+        elif(NLPLLambda==1):
+            currentNLPL = nlpDistance.NLPLoss(decData, trainData, 6)
+            currentEL = torch.zeros_like(currentNLPL)
 
         else:
-            currentSL = SSIMLoss(decData, trainData)
+            currentNLPL = nlpDistance.NLPLoss(decData, trainData, 6)
             minV = int(qEncData.min().item())
             maxV = int(qEncData.max().item())
             currentEL = entropyLoss(qEncData, minV, maxV)
 
-        if(currentMSEL > 1000 or currentSL < 0.6):
+        img1 = trainData.clone()
+        img2 = decData.clone()
+        img1.detach_()
+        img2.detach_()
+        img2[img2<0] = 0
+        img2[img2>255] = 255
+        currentMS_SSIM = pytorch_msssim.ms_ssim(img1, img2, data_range=255, size_average=True)
+
+        if(currentMSEL > 500):
             loss = currentMSEL
         else:
-            loss = -ssimLambda *currentSL + (1-ssimLambda) * currentEL
-        #print('ssim=', currentSL.item(), 'EL=',currentEL.item(),'loss=',loss.item())
+            loss = NLPLLambda * currentNLPL + (1-NLPLLambda) * currentEL
+        #print('NLPL=', currentNLPL.item(), 'EL=',currentEL.item(),'loss=',loss.item())
         if(defMaxLossOfTrainData==0):
             maxLossOfTrainData = loss
-            maxLossTrainSL = currentSL
+            maxLossTrainNLPL = currentNLPL
             maxLossTrainEL = currentEL
             maxLossTrainMSEL = currentMSEL
+            maxLossTrainMS_SSIM = currentMS_SSIM
             defMaxLossOfTrainData = 1
         else:
             if(loss>maxLossOfTrainData):
                 maxLossOfTrainData = loss # 保存所有训练样本中的最大损失
-                maxLossTrainSL = currentSL
+                maxLossTrainNLPL = currentNLPL
                 maxLossTrainEL = currentEL
                 maxLossTrainMSEL = currentMSEL
+                maxLossTrainMS_SSIM = currentMS_SSIM
 
         loss.backward()
         optimizer.step()
-        print(j, ' ', end='')
+        print('%.3f'%loss.item(), ' ', end='')
         sys.stdout.flush()
 
     if (i == 0):
         minLoss = maxLossOfTrainData
-        minLossSL = maxLossTrainSL
+        minLossNLPL = maxLossTrainNLPL
         minLossEL = maxLossTrainEL
         minLossMSEL = maxLossTrainMSEL
+        minLossMS_SSIM = maxLossTrainMS_SSIM
     else:
         if (minLoss > maxLossOfTrainData):  # 保存最小loss对应的模型
             minLoss = maxLossOfTrainData
-            minLossSL = maxLossTrainSL
+            minLossNLPL = maxLossTrainNLPL
             minLossEL = maxLossTrainEL
             minLossMSEL = maxLossTrainMSEL
+            minLossMS_SSIM = maxLossTrainMS_SSIM
             torch.save(encNet, './models/encNet_' + sys.argv[5] + '.pkl')
             torch.save(decNet, './models/decNet_' + sys.argv[5] + '.pkl')
             print('save ./models/' + sys.argv[5] + '.pkl')
 
     print(sys.argv,end='\n')
     print(i)
-    print('本次训练最大loss=',maxLossOfTrainData.item(),'MSEL=',maxLossTrainMSEL.item(),'SSIM=',maxLossTrainSL.item(),'EL=',maxLossTrainEL.item())
-    print('minLoss=',minLoss.item(),'MSEL=',minLossMSEL.item(),'SSIM=',minLossSL.item(),'EL=',minLossEL.item())
+    print('本次训练最大loss=','%.3f'%maxLossOfTrainData.item(),'MSEL=','%.3f'%maxLossTrainMSEL.item(),'NLPL=','%.3f'%maxLossTrainNLPL.item(),'EL=','%.3f'%maxLossTrainEL.item(),'MS_SSIM=','%.3f'%maxLossTrainMS_SSIM.item())
+    print('minLoss=','%.3f'%minLoss.item(),'MSEL=','%.3f'%minLossMSEL.item(),'NLPL=','%.3f'%minLossNLPL.item(),'EL=','%.3f'%minLossEL.item(),'MS_SSIM=','%.3f'%minLossMS_SSIM.item())
 
 
 

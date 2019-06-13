@@ -9,12 +9,7 @@ import sys
 import os
 import pytorch_ssim
 import pytorch_gdn
-# minLoss= -0.5664932131767273 MSEL= 78.70614624023438 SSIM= 0.5664932131767273 EL= 0.0
-# minLoss= -0.5889261960983276 MSEL= 191.78775024414062 SSIM= 0.5889261960983276 EL= 0.0
-# minLoss= -0.6235981583595276 MSEL= 72.41802978515625 SSIM= 0.6235981583595276 EL= 0.0
-# minLoss= -0.6367703676223755 MSEL= 56.94683074951172 SSIM= 0.6367703676223755 EL= 0.0
-# minLoss= -0.6709020137786865 MSEL= 40.294921875 SSIM= 0.6709020137786865 EL= 0.0
-# minLoss= -0.6929290294647217 MSEL= 108.83416748046875 SSIM= 0.6929290294647217 EL= 0.0
+
 # 导入信息熵损失
 from torch.utils.cpp_extension import load
 entropy_loss_cuda = load(
@@ -50,19 +45,11 @@ class EncodeNet(nn.Module):
         self.conv1_1 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv1_2 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv1_3 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv1_4 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv1_5 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv1_6 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv1_7 = nn.Conv2d(128, 128, 3, padding=1)
 
         self.conv2_0 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv2_1 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv2_2 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv2_3 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv2_4 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv2_5 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv2_6 = nn.Conv2d(128, 128, 3, padding=1)
-        self.conv2_7 = nn.Conv2d(128, 128, 3, padding=1)
 
         self.conv_g1 = nn.Conv2d(128, 128, 8, 8)
         self.conv_g2 = nn.Conv2d(128, 128, 4, 4)
@@ -90,13 +77,6 @@ class EncodeNet(nn.Module):
         x1 = F.leaky_relu(self.conv1_3(x1))
         x1 = x1 + x1A
 
-        x1A = x1
-        x1 = F.leaky_relu(self.conv1_4(x1))
-        x1 = F.leaky_relu(self.conv1_5(x1))
-        x1 = F.leaky_relu(self.conv1_6(x1))
-        x1 = F.leaky_relu(self.conv1_7(x1))
-        x1 = x1 + x1A
-
         x2 = self.gdn_f1(F.leaky_relu(self.conv_f1(x1)))
         y2 = self.gdn_g2(F.leaky_relu(self.conv_g2(x2)))
 
@@ -105,13 +85,6 @@ class EncodeNet(nn.Module):
         x2 = F.leaky_relu(self.conv2_1(x2))
         x2 = F.leaky_relu(self.conv2_2(x2))
         x2 = F.leaky_relu(self.conv2_3(x2))
-        x2 = x2 + x2A
-
-        x2A = x2
-        x2 = F.leaky_relu(self.conv2_4(x2))
-        x2 = F.leaky_relu(self.conv2_5(x2))
-        x2 = F.leaky_relu(self.conv2_6(x2))
-        x2 = F.leaky_relu(self.conv2_7(x2))
         x2 = x2 + x2A
 
         x3 = self.gdn_f2(F.leaky_relu(self.conv_f2(x2)))
@@ -132,19 +105,11 @@ class DecodeNet(nn.Module):
         self.tconv1_1 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv1_2 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv1_3 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv1_4 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv1_5 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv1_6 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv1_7 = nn.ConvTranspose2d(128, 128, 3, padding=1)
 
         self.tconv2_0 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv2_1 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv2_2 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv2_3 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv2_4 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv2_5 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv2_6 = nn.ConvTranspose2d(128, 128, 3, padding=1)
-        self.tconv2_7 = nn.ConvTranspose2d(128, 128, 3, padding=1)
 
         self.tconv_g1 = nn.ConvTranspose2d(128, 128, 8, 8)
         self.tconv_g2 = nn.ConvTranspose2d(128, 128, 4, 4)
@@ -164,7 +129,6 @@ class DecodeNet(nn.Module):
 
         x3 = F.leaky_relu(self.tconv_g3(self.igdn_g3(x)))
         x3 = F.leaky_relu(self.tconv_f2(self.igdn_f2(x3)))
-
         x3A = x3
         x3 = F.leaky_relu(self.tconv2_0(x3))
         x3 = F.leaky_relu(self.tconv2_1(x3))
@@ -172,28 +136,13 @@ class DecodeNet(nn.Module):
         x3 = F.leaky_relu(self.tconv2_3(x3))
         x3 = x3 + x3A
 
-        x3A = x3
-        x3 = F.leaky_relu(self.tconv2_4(x3))
-        x3 = F.leaky_relu(self.tconv2_5(x3))
-        x3 = F.leaky_relu(self.tconv2_6(x3))
-        x3 = F.leaky_relu(self.tconv2_7(x3))
-        x3 = x3 + x3A
-
         x2 = x3 + F.leaky_relu(self.tconv_g2(self.igdn_g2(x)))
         x2 = F.leaky_relu(self.tconv_f1(self.igdn_f1(x2)))
-
         x2A = x2
         x2 = F.leaky_relu(self.tconv1_0(x2))
         x2 = F.leaky_relu(self.tconv1_1(x2))
         x2 = F.leaky_relu(self.tconv1_2(x2))
         x2 = F.leaky_relu(self.tconv1_3(x2))
-        x2 = x2 + x2A
-
-        x2A = x2
-        x2 = F.leaky_relu(self.tconv1_4(x2))
-        x2 = F.leaky_relu(self.tconv1_5(x2))
-        x2 = F.leaky_relu(self.tconv1_6(x2))
-        x2 = F.leaky_relu(self.tconv1_7(x2))
         x2 = x2 + x2A
 
         x1 = x2 + F.leaky_relu(self.tconv_g1(self.igdn_g1(x)))
@@ -214,7 +163,6 @@ class DecodeNet(nn.Module):
 
 
 
-import bmpReader
 '''
 argv:
 1: 使用哪个显卡
@@ -224,22 +172,24 @@ argv:
 5: 保存的模型名字
 6: λ 训练目标是最小化loss = -λ*SSIM + (1-λ)EL
    增大λ 则训练目标向质量方向偏移
-7: batchSize
 '''
 
-if(len(sys.argv)!=8):
+if(len(sys.argv)!=7):
     print('1: 使用哪个显卡\n'
           '2: 为0则重新开始训练 否则读取之前的模型\n'
           '3: 学习率 Adam默认是1e-3\n'
           '4: 训练次数\n'
           '5: 保存的模型标号\n'
-          '6: λ 训练目标是最小化loss = -λ*SSIM + (1-λ)EL 增大λ 则训练目标向质量方向偏移\n'
-          '7: batchSize')
+          '6: lambda')
     exit(0)
-
-batchSize = int(sys.argv[7]) # 一次读取?张图片进行训练
-dReader = bmpReader.datasetReader(batchSize)
 torch.cuda.set_device(int(sys.argv[1])) # 设置使用哪个显卡
+imgNum = os.listdir('./256bmp').__len__()
+imgData = numpy.empty([imgNum,1,256,256])
+
+for i in range(imgNum):
+    img = Image.open('./256bmp/' + str(i) + '.bmp').convert('L')
+    imgData[i] = numpy.asarray(img).astype(float).reshape([1,256,256])
+
 
 
 
@@ -263,18 +213,30 @@ ssimLambda = float(sys.argv[6])
 
 optimizer = torch.optim.Adam([{'params':encNet.parameters()},{'params':decNet.parameters()}], lr=float(sys.argv[3]))
 
+batchSize = 8 # 一次读取?张图片进行训练
+imgData = torch.from_numpy(imgData).float().cuda()
 trainData = torch.empty([batchSize, 1, 256, 256]).float().cuda()
 
 
 
 for i in range(int(sys.argv[4])):
 
+    readSeq = torch.randperm(imgNum) # 生成读取的随机序列
+
+    j = 0
 
     defMaxLossOfTrainData = 0
 
-    for j in range(16): # 每16批 当作一个训练单元 统计这16批数据的表现
-        for k in range(batchSize):
-            trainData[k] = torch.from_numpy(dReader.readImg()).float().cuda()
+    while(1):
+        if(j==imgNum):
+            break
+        k = 0
+        while(1):
+            trainData[k] = imgData[readSeq[j]]
+            k = k + 1
+            j = j + 1
+            if(k==batchSize or j==imgNum):
+                break
 
         optimizer.zero_grad()
         encData = encNet(trainData)
@@ -299,7 +261,7 @@ for i in range(int(sys.argv[4])):
             maxV = int(qEncData.max().item())
             currentEL = entropyLoss(qEncData, minV, maxV)
 
-        if(currentMSEL > 1000 or currentSL < 0.6):
+        if(currentMSEL > 1000):
             loss = currentMSEL
         else:
             loss = -ssimLambda *currentSL + (1-ssimLambda) * currentEL
@@ -319,7 +281,7 @@ for i in range(int(sys.argv[4])):
 
         loss.backward()
         optimizer.step()
-        print(j, ' ', end='')
+        print(j,' ',end='')
         sys.stdout.flush()
 
     if (i == 0):

@@ -9,12 +9,10 @@ import sys
 import os
 import pytorch_ssim
 import pytorch_gdn
-# minLoss= -0.8919838070869446 MSEL= 30.461572647094727 SSIM= 0.8919838070869446 EL= 0.0
-# minLoss= -0.8391619920730591 MSEL= 38.64547348022461 SSIM= 0.8391619920730591 EL= 0.0
-# minLoss= -0.8637346029281616 MSEL= 39.516624450683594 SSIM= 0.8637346029281616 EL= 0.0
-# minLoss= -0.6046683192253113 MSEL= 86.92843627929688 SSIM= 0.6046683192253113 EL= 0.0
-# minLoss= -0.6142460703849792 MSEL= 140.17283630371094 SSIM= 0.6142460703849792 EL= 0.0
-# minLoss= -0.633123517036438 MSEL= 80.04871368408203 SSIM= 0.633123517036438 EL= 0.0
+# minLoss= -0.507336437702179 MSEL= 59.54900360107422 SSIM= 0.507336437702179 EL= 0.0
+#　minLoss= -0.7133466005325317 MSEL= 29.997114181518555 SSIM= 0.7133466005325317 EL= 0.0
+# minLoss= -0.744612455368042 MSEL= 36.298465728759766 SSIM= 0.744612455368042 EL= 0.0
+# minLoss= -0.744612455368042 MSEL= 36.298465728759766 SSIM= 0.744612455368042 EL= 0.0
 # 导入信息熵损失
 from torch.utils.cpp_extension import load
 entropy_loss_cuda = load(
@@ -50,10 +48,25 @@ class EncodeNet(nn.Module):
         self.conv256_2 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv256_3 = nn.Conv2d(128, 128, 3, padding=1)
 
+        self.conv256_4 = nn.Conv2d(128, 128, 3, padding=1)
+        self.conv256_5 = nn.Conv2d(128, 128, 3, padding=1)
+        self.conv256_6 = nn.Conv2d(128, 128, 3, padding=1)
+        self.conv256_7 = nn.Conv2d(128, 128, 3, padding=1)
+
         self.conv128_0 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv128_1 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv128_2 = nn.Conv2d(128, 128, 3, padding=1)
         self.conv128_3 = nn.Conv2d(128, 128, 3, padding=1)
+
+        self.conv128_4 = nn.Conv2d(128, 128, 3, padding=1)
+        self.conv128_5 = nn.Conv2d(128, 128, 3, padding=1)
+        self.conv128_6 = nn.Conv2d(128, 128, 3, padding=1)
+        self.conv128_7 = nn.Conv2d(128, 128, 3, padding=1)
+
+        self.conv64_0 = nn.Conv2d(128, 128, 3, padding=1)
+        self.conv64_1 = nn.Conv2d(128, 128, 3, padding=1)
+        self.conv64_2 = nn.Conv2d(128, 128, 3, padding=1)
+        self.conv64_3 = nn.Conv2d(128, 128, 3, padding=1)
 
         self.conv_down_256_32 = nn.Conv2d(128, 128, 8, 8)
         self.conv_down_128_32 = nn.Conv2d(128, 128, 4, 4)
@@ -72,27 +85,50 @@ class EncodeNet(nn.Module):
 
         # n*1*256*256 -> n*128*256*256
         x1 = F.leaky_relu(self.conv_channels_up(x))
-        y1 = self.gdn_down_256_32(F.leaky_relu(self.conv_down_256_32(x1)))
+
+        y1A_ = y1_ = x1
+        y1_ = F.leaky_relu(self.conv256_0(y1_))
+        y1_ = F.leaky_relu(self.conv256_1(y1_))
+        y1_ = F.leaky_relu(self.conv256_2(y1_))
+        y1_ = F.leaky_relu(self.conv256_3(y1_))
+        y1_ = y1_ + y1A_
+
+        y1 = self.gdn_down_256_32(F.leaky_relu(self.conv_down_256_32(y1_)))
 
         x1A_ = x1_ = x1
-        x1_ = F.leaky_relu(self.conv256_0(x1_))
-        x1_ = F.leaky_relu(self.conv256_1(x1_))
-        x1_ = F.leaky_relu(self.conv256_2(x1_))
-        x1_ = F.leaky_relu(self.conv256_3(x1_))
+        x1_ = F.leaky_relu(self.conv256_4(x1_))
+        x1_ = F.leaky_relu(self.conv256_5(x1_))
+        x1_ = F.leaky_relu(self.conv256_6(x1_))
+        x1_ = F.leaky_relu(self.conv256_7(x1_))
         x1_ = x1_ + x1A_
 
         x2 = self.gdn_down_256_128(F.leaky_relu(self.conv_down_256_128(x1_)))
-        y2 = self.gdn_down_128_32(F.leaky_relu(self.conv_down_128_32(x2)))
+
+        y2A_ = y2_ = x2
+        y2_ = F.leaky_relu(self.conv128_0(y2_))
+        y2_ = F.leaky_relu(self.conv128_1(y2_))
+        y2_ = F.leaky_relu(self.conv128_2(y2_))
+        y2_ = F.leaky_relu(self.conv128_3(y2_))
+        y2_ = y2_ + y2A_
+
+        y2 = self.gdn_down_128_32(F.leaky_relu(self.conv_down_128_32(y2_)))
 
         x2A_ = x2_ = x2
-        x2_ = F.leaky_relu(self.conv128_0(x2_))
-        x2_ = F.leaky_relu(self.conv128_1(x2_))
-        x2_ = F.leaky_relu(self.conv128_2(x2_))
-        x2_ = F.leaky_relu(self.conv128_3(x2_))
+        x2_ = F.leaky_relu(self.conv128_4(x2_))
+        x2_ = F.leaky_relu(self.conv128_5(x2_))
+        x2_ = F.leaky_relu(self.conv128_6(x2_))
+        x2_ = F.leaky_relu(self.conv128_7(x2_))
         x2_ = x2_ + x2A_
 
         x3 = self.gdn_down_128_64(F.leaky_relu(self.conv_down_128_64(x2_)))
-        y3 = self.gdn_down_64_32(F.leaky_relu(self.conv_down_64_32(x3)))
+
+        y3A_= x3
+        y3_ = F.leaky_relu(self.conv64_0(y3A_))
+        y3_ = F.leaky_relu(self.conv64_1(y3_))
+        y3_ = F.leaky_relu(self.conv64_2(y3_))
+        y3_ = F.leaky_relu(self.conv64_3(y3_))
+        y3_ = y3_ + y3A_
+        y3 = self.gdn_down_64_32(F.leaky_relu(self.conv_down_64_32(y3_)))
 
 
 
@@ -116,10 +152,25 @@ class DecodeNet(nn.Module):
         self.tconv256_2 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv256_3 = nn.ConvTranspose2d(128, 128, 3, padding=1)
 
+        self.tconv256_4 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+        self.tconv256_5 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+        self.tconv256_6 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+        self.tconv256_7 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+
         self.tconv128_0 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv128_1 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv128_2 = nn.ConvTranspose2d(128, 128, 3, padding=1)
         self.tconv128_3 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+
+        self.tconv128_4 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+        self.tconv128_5 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+        self.tconv128_6 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+        self.tconv128_7 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+
+        self.tconv64_0 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+        self.tconv64_1 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+        self.tconv64_2 = nn.ConvTranspose2d(128, 128, 3, padding=1)
+        self.tconv64_3 = nn.ConvTranspose2d(128, 128, 3, padding=1)
 
         self.tconv_up_32_256 = nn.ConvTranspose2d(128, 128, 8, 8)
         self.tconv_up_32_128 = nn.ConvTranspose2d(128, 128, 4, 4)
@@ -137,33 +188,54 @@ class DecodeNet(nn.Module):
 
     def forward(self, x):
 
-        x3 = F.leaky_relu(self.tconv_up_32_64(self.igdn_up_32_64(x)))
+        y3_ = F.leaky_relu(self.tconv_up_32_64(self.igdn_up_32_64(x)))
+        y3A_ = y3_
+        y3_ = F.leaky_relu(self.tconv64_0(y3_))
+        y3_ = F.leaky_relu(self.tconv64_1(y3_))
+        y3_ = F.leaky_relu(self.tconv64_2(y3_))
+        y3_ = F.leaky_relu(self.tconv64_3(y3_))
+        x3 = y3_ + y3A_
+
+        y2_ = F.leaky_relu(self.tconv_up_32_128(self.igdn_up_32_128(x)))
+        y2A_ = y2_
+        y2_ = F.leaky_relu(self.tconv128_0(y2_))
+        y2_ = F.leaky_relu(self.tconv128_1(y2_))
+        y2_ = F.leaky_relu(self.tconv128_2(y2_))
+        y2_ = F.leaky_relu(self.tconv128_3(y2_))
+        y2_ = y2_ + y2A_
 
         x2_ = F.leaky_relu(self.tconv_up_64_128(self.igdn_up_64_128(x3)))
         x2A_ = x2_
-        x2_ = F.leaky_relu(self.tconv128_0(x2_))
-        x2_ = F.leaky_relu(self.tconv128_1(x2_))
-        x2_ = F.leaky_relu(self.tconv128_2(x2_))
-        x2_ = F.leaky_relu(self.tconv128_3(x2_))
+        x2_ = F.leaky_relu(self.tconv128_4(x2_))
+        x2_ = F.leaky_relu(self.tconv128_5(x2_))
+        x2_ = F.leaky_relu(self.tconv128_6(x2_))
+        x2_ = F.leaky_relu(self.tconv128_7(x2_))
         x2_ = x2_ + x2A_
 
-        x2 = F.leaky_relu(self.tconv_up_32_128(self.igdn_up_32_128(x)))
-        x2 = x2 + x2_
+        x2 = x2_ + y2_
+
+        y1_ = F.leaky_relu(self.tconv_up_32_256(self.igdn_up_32_256(x)))
+        y1A_ = y1_
+        y1_ = F.leaky_relu(self.tconv256_0(y1_))
+        y1_ = F.leaky_relu(self.tconv256_1(y1_))
+        y1_ = F.leaky_relu(self.tconv256_2(y1_))
+        y1_ = F.leaky_relu(self.tconv256_3(y1_))
+        y1_ = y1_ + y1A_
 
         x1_ = F.leaky_relu(self.tconv_up_128_256(self.igdn_up_128_256(x2)))
         x1A_ = x1_
-        x1_ = F.leaky_relu(self.tconv256_0(x1_))
-        x1_ = F.leaky_relu(self.tconv256_1(x1_))
-        x1_ = F.leaky_relu(self.tconv256_2(x1_))
-        x1_ = F.leaky_relu(self.tconv256_3(x1_))
+        x1_ = F.leaky_relu(self.tconv256_4(x1_))
+        x1_ = F.leaky_relu(self.tconv256_5(x1_))
+        x1_ = F.leaky_relu(self.tconv256_6(x1_))
+        x1_ = F.leaky_relu(self.tconv256_7(x1_))
         x1_ = x1_ + x1A_
 
-        x1 = F.leaky_relu(self.tconv_up_32_256(self.igdn_up_32_256(x)))
-        x1 = x1 + x1_
+        x1 = x1_ + y1_
 
         x = F.leaky_relu(self.tconv_channels_down(x1))
 
         return x
+
 
 
 
@@ -297,8 +369,6 @@ for i in range(int(sys.argv[4])):
     print(i)
     print('本次训练最大loss=',maxLossOfTrainData.item(),'MSEL=',maxLossTrainMSEL.item(),'SSIM=',maxLossTrainSL.item(),'EL=',maxLossTrainEL.item())
     print('minLoss=',minLoss.item(),'MSEL=',minLossMSEL.item(),'SSIM=',minLossSL.item(),'EL=',minLossEL.item())
-
-
 
 
 
