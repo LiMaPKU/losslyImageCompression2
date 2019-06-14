@@ -2,15 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a1099a8-8fdc-46a6-8af9-a3e50f324907" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_3_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/5_3_1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/6_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/6_1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/6_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/6_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/6_3.py" beforeDir="false" afterPath="$PROJECT_DIR$/6_3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/6_3_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/6_3_1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/6_3_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/6_3_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/6_3_3.py" beforeDir="false" afterPath="$PROJECT_DIR$/6_3_3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/6_4.py" beforeDir="false" afterPath="$PROJECT_DIR$/6_4.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/新建 Microsoft Word 文档.docx" beforeDir="false" afterPath="$PROJECT_DIR$/新建 Microsoft Word 文档.docx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -45,8 +36,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/7.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="95" column="66" selection-start-line="95" selection-start-column="66" selection-end-line="95" selection-end-column="66" />
+            <state relative-caret-position="372">
+              <caret line="95" column="23" lean-forward="true" selection-start-line="95" selection-start-column="23" selection-end-line="95" selection-end-column="23" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -229,7 +220,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="70" />
     <option name="width" value="1850" />
     <option name="height" value="1080" />
@@ -479,15 +470,15 @@
       <workItem from="1560334795734" duration="13078000" />
       <workItem from="1560393406209" duration="14820000" />
       <workItem from="1560478445211" duration="6097000" />
-      <workItem from="1560509174857" duration="6292000" />
+      <workItem from="1560509174857" duration="7110000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="141610000" />
+    <option name="totallyTimeSpent" value="142428000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31343284" />
@@ -884,8 +875,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/7.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="95" column="66" selection-start-line="95" selection-start-column="66" selection-end-line="95" selection-end-column="66" />
+        <state relative-caret-position="372">
+          <caret line="95" column="23" lean-forward="true" selection-start-line="95" selection-start-column="23" selection-end-line="95" selection-end-column="23" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
