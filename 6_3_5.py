@@ -9,7 +9,8 @@ import sys
 import os
 import pytorch_gdn
 import pytorch_msssim
-# minLoss= 10.781 MSEL= 271.238 NLPL= 10.781 EL= 0.000 MS_SSIM= 0.941
+# minLoss= 18.861 MSEL= 327.423 NLPL= 18.861 EL= 0.000 MS_SSIM= 0.881
+# minLoss= 15.082 MSEL= 461.565 NLPL= 15.082 EL= 0.000 MS_SSIM= 0.877
 # 导入信息熵损失
 from torch.utils.cpp_extension import load
 entropy_loss_cuda = load(
@@ -38,36 +39,51 @@ class EncodeNet(nn.Module):
     def __init__(self):
         super(EncodeNet, self).__init__()
 
-        self.conv_channels_up = nn.Conv2d(1, 48, 1)
+        self.conv_channels_up = nn.Conv2d(1, 64, 1)
 
-        self.conv_down_256_32 = nn.Conv2d(48, 48, 8, 8)
-        self.conv_down_128_32 = nn.Conv2d(48, 48, 4, 4)
-        self.conv_down_64_32 = nn.Conv2d(48, 48, 2, 2)
+        self.conv_down_256_16 = nn.Conv2d(64, 64, 16, 16)
+        self.conv_down_128_16 = nn.Conv2d(64, 64, 8, 8)
+        self.conv_down_64_16 = nn.Conv2d(64, 64, 4, 4)
+        self.conv_down_32_16 = nn.Conv2d(64, 64, 2, 2)
 
-        self.gdn_down_256_32 = pytorch_gdn.GDN(48)
-        self.gdn_down_128_32 = pytorch_gdn.GDN(48)
-        self.gdn_down_64_32 = pytorch_gdn.GDN(48)
+        self.gdn_down_256_16 = pytorch_gdn.GDN(64)
+        self.gdn_down_128_16 = pytorch_gdn.GDN(64)
+        self.gdn_down_64_16 = pytorch_gdn.GDN(64)
+        self.gdn_down_32_16 = pytorch_gdn.GDN(64)
 
-        self.conv_down_256_128 = nn.Conv2d(48, 48, 2, 2)
-        self.conv_down_128_64 = nn.Conv2d(48, 48, 2, 2)
+        self.conv_down_256_128 = nn.Conv2d(64, 64, 2, 2)
+        self.conv_down_128_64 = nn.Conv2d(64, 64, 2, 2)
+        self.conv_down_64_32 = nn.Conv2d(64, 64, 2, 2)
+        self.conv_down_32_16 = nn.Conv2d(64, 64, 2, 2)
 
-        self.gdn_down_256_128 = pytorch_gdn.GDN(48)
-        self.gdn_down_128_64 = pytorch_gdn.GDN(48)
+        self.gdn_down_256_128 = pytorch_gdn.GDN(64)
+        self.gdn_down_128_64 = pytorch_gdn.GDN(64)
+        self.gdn_down_64_32 = pytorch_gdn.GDN(64)
+        self.gdn_down_32_16 = pytorch_gdn.GDN(64)
+
+        self.conv_down_16_8 = nn.Conv2d(64, 64, 2, 2)
+        self.gdn_down_16_8 = pytorch_gdn.GDN(64)
+        self.tconv_up_8_16 = nn.ConvTranspose2d(64, 64, 2, 2)
+
+
     def forward(self, x):
 
-        # n*1*256*256 -> n*128*256*256
         x1 = F.leaky_relu(self.conv_channels_up(x))
-        y1 = self.gdn_down_256_32(F.leaky_relu(self.conv_down_256_32(x1)))
+        y1 = self.gdn_down_256_16(F.leaky_relu(self.conv_down_256_16(x1)))
 
         x2 = self.gdn_down_256_128(F.leaky_relu(self.conv_down_256_128(x1)))
-        y2 = self.gdn_down_128_32(F.leaky_relu(self.conv_down_128_32(x2)))
-
+        y2 = self.gdn_down_128_16(F.leaky_relu(self.conv_down_128_16(x2)))
 
         x3 = self.gdn_down_128_64(F.leaky_relu(self.conv_down_128_64(x2)))
-        y3 = self.gdn_down_64_32(F.leaky_relu(self.conv_down_64_32(x3)))
+        y3 = self.gdn_down_64_16(F.leaky_relu(self.conv_down_64_16(x3)))
 
+        x4 = self.gdn_down_64_32(F.leaky_relu(self.conv_down_64_32(x3)))
+        y4 = self.gdn_down_32_16(F.leaky_relu(self.conv_down_32_16(x4)))
 
-        return y1 + y2 + y3 # n*64*32*32
+        y5 = self.gdn_down_16_8(F.leaky_relu(self.conv_down_16_8(y4)))
+        y5 = F.leaky_relu(self.tconv_up_8_16(y5))
+
+        return y1 + y2 + y3 + y4 + y5# n*64*16*16
 
 
 
@@ -79,34 +95,39 @@ class DecodeNet(nn.Module):
     def __init__(self):
         super(DecodeNet, self).__init__()
 
-        self.tconv_channels_down = nn.ConvTranspose2d(48, 1, 1)
+        self.tconv_channels_down = nn.ConvTranspose2d(64, 1, 1)
 
-        self.tconv_up_32_256 = nn.ConvTranspose2d(48, 48, 8, 8)
-        self.tconv_up_32_128 = nn.ConvTranspose2d(48, 48, 4, 4)
-        self.tconv_up_32_64 = nn.ConvTranspose2d(48, 48, 2, 2)
+        self.tconv_up_16_256 = nn.ConvTranspose2d(64, 64, 16, 16)
+        self.tconv_up_16_128 = nn.ConvTranspose2d(64, 64, 8, 8)
+        self.tconv_up_16_64 = nn.ConvTranspose2d(64, 64, 4, 4)
+        self.tconv_up_16_32 = nn.ConvTranspose2d(64, 64, 2, 2)
 
-        self.igdn_up_32_256 = pytorch_gdn.GDN(48, True)
-        self.igdn_up_32_128 = pytorch_gdn.GDN(48, True)
-        self.igdn_up_32_64 = pytorch_gdn.GDN(48, True)
+        self.igdn_up_16_256 = pytorch_gdn.GDN(64, True)
+        self.igdn_up_16_128 = pytorch_gdn.GDN(64, True)
+        self.igdn_up_16_64 = pytorch_gdn.GDN(64, True)
+        self.igdn_up_16_32 = pytorch_gdn.GDN(64, True)
 
-        self.tconv_up_64_128 = nn.ConvTranspose2d(48, 48, 2, 2)
-        self.tconv_up_128_256 = nn.ConvTranspose2d(48, 48, 2, 2)
+        self.tconv_up_32_64 = nn.ConvTranspose2d(64, 64, 2, 2)
+        self.tconv_up_64_128 = nn.ConvTranspose2d(64, 64, 2, 2)
+        self.tconv_up_128_256 = nn.ConvTranspose2d(64, 64, 2, 2)
 
-        self.igdn_up_64_128 = pytorch_gdn.GDN(48, True)
-        self.igdn_up_128_256 = pytorch_gdn.GDN(48, True)
+        self.igdn_up_32_64 = pytorch_gdn.GDN(64, True)
+        self.igdn_up_64_128 = pytorch_gdn.GDN(64, True)
+        self.igdn_up_128_256 = pytorch_gdn.GDN(64, True)
 
     def forward(self, x):
+        x4 = F.leaky_relu(self.tconv_up_16_32(self.igdn_up_16_32(x)))
 
-        x3 = F.leaky_relu(self.tconv_up_32_64(self.igdn_up_32_64(x)))
+        x3 = F.leaky_relu(self.tconv_up_16_64(self.igdn_up_16_64(x)))
+        x3_ = F.leaky_relu(self.tconv_up_32_64(self.igdn_up_32_64(x4)))
+        x3 = x3 + x3_
 
+        x2 = F.leaky_relu(self.tconv_up_16_128(self.igdn_up_16_128(x)))
         x2_ = F.leaky_relu(self.tconv_up_64_128(self.igdn_up_64_128(x3)))
-
-        x2 = F.leaky_relu(self.tconv_up_32_128(self.igdn_up_32_128(x)))
         x2 = x2 + x2_
 
+        x1 = F.leaky_relu(self.tconv_up_16_256(self.igdn_up_16_256(x)))
         x1_ = F.leaky_relu(self.tconv_up_128_256(self.igdn_up_128_256(x2)))
-
-        x1 = F.leaky_relu(self.tconv_up_32_256(self.igdn_up_32_256(x)))
         x1 = x1 + x1_
 
         x = F.leaky_relu(self.tconv_channels_down(x1))

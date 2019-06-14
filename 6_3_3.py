@@ -9,7 +9,7 @@ import sys
 import os
 import pytorch_gdn
 import pytorch_msssim
-
+# minLoss= 11.457 MSEL= 321.971 NLPL= 11.457 EL= 0.000 MS_SSIM= 0.913
 # 导入信息熵损失
 from torch.utils.cpp_extension import load
 entropy_loss_cuda = load(

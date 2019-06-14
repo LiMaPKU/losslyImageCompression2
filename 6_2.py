@@ -10,6 +10,7 @@ import os
 import pytorch_gdn
 import pytorch_msssim
 # minLoss= 21.397 MSEL= 435.592 NLPL= 21.397 EL= 0.000 MS_SSIM= 0.862
+# minLoss= 21.170 MSEL= 402.444 NLPL= 21.170 EL= 0.000 MS_SSIM= 0.868
 
 # 导入信息熵损失
 from torch.utils.cpp_extension import load
