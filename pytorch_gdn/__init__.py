@@ -7,7 +7,7 @@ from torch.autograd import Function
 
 class LowerBound(Function):
     def forward(ctx, inputs, bound):
-        b = torch.ones(inputs.size()) * bound
+        b = torch.ones(inputs.size()).cuda() * bound
         b = b.to(inputs.device)
         ctx.save_for_backward(inputs, b)
         return torch.max(inputs, b)

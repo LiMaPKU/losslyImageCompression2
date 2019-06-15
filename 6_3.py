@@ -63,7 +63,6 @@ class EncodeNet(nn.Module):
 
     def forward(self, x):
 
-        # n*1*256*256 -> n*128*256*256
         x1 = F.leaky_relu(self.conv_channels_up(x))
         y1 = self.gdn_down_256_16(F.leaky_relu(self.conv_down_256_16(x1)))
 
@@ -76,7 +75,7 @@ class EncodeNet(nn.Module):
         x4 = self.gdn_down_64_32(F.leaky_relu(self.conv_down_64_32(x3)))
         y4 = self.gdn_down_32_16(F.leaky_relu(self.conv_down_32_16(x4)))
 
-        return y1 + y2 + y3 + y4 # n*64*16*16
+        return y1 + y2 + y3 + y4
 
 
 
@@ -210,11 +209,11 @@ for i in range(int(sys.argv[4])):
 
 
         elif(NLPLLambda==1):
-            currentNLPL = nlpDistance.NLPLoss(decData, trainData, 6)
+            currentNLPL = nlpDistance.NLPLoss(decData, trainData, 8)
             currentEL = torch.zeros_like(currentNLPL)
 
         else:
-            currentNLPL = nlpDistance.NLPLoss(decData, trainData, 6)
+            currentNLPL = nlpDistance.NLPLoss(decData, trainData, 8)
             minV = int(qEncData.min().item())
             maxV = int(qEncData.max().item())
             currentEL = entropyLoss(qEncData, minV, maxV)
