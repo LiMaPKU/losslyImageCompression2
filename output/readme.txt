@@ -1,3 +1,4 @@
 模型为encNet_6_3_1.pkl和decNet_6_3_1.pkl
 MS-SSIM=0.9254672527313232
 编码器的输出保存在encData.npy
+jpeg MSSSIM=0.946 2.05 KB 

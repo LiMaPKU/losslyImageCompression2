@@ -3,6 +3,7 @@ from scipy import stats
 import torch
 import huffmanEncodeFunction
 from bitstream import BitStream
+import huffmanTable
 # 不使用科学计数法输出 不输出省略号 浮点输出2位小数
 numpy.set_printoptions(suppress=True, threshold=numpy.inf, precision=2)
 # z扫描顺序
@@ -12,10 +13,10 @@ inputData = numpy.load('./output/encData.npy').squeeze()
 minV = inputData.min()
 maxV = inputData.max()
 print('原始数据的最小值最大值分别为',minV,maxV)
-inputData = inputData - int((minV + maxV)/2) # 将数据中心化
-newMinV = inputData.min()
-newMaxV = inputData.max()
-print('中心化后的最小值最大值分别为',newMinV,newMaxV)
+#inputData = inputData - int((minV + maxV)/2) # 将数据中心化
+#newMinV = inputData.min()
+#newMaxV = inputData.max()
+#print('中心化后的最小值最大值分别为',newMinV,newMaxV)
 
 
 # for i in range(inputData.shape[0]):
@@ -27,11 +28,9 @@ modeList = numpy.zeros(shape=[inputData.shape[0]], dtype=int) # 保存每个通�
 dModeList = numpy.zeros(shape=[inputData.shape[0]], dtype=int) # 保存众数的前向差分
 for i in range(inputData.shape[0]):
     # print('--------',i,'--------')
-    # 在每个通道内，[0][0]位置元素保存众数，其他元素均减去[0][0]
 
     modeV = int(stats.mode(inputData[i].flatten())[0][0])
     inputData[i] = inputData[i] - modeV
-    inputData[i][0][0] = modeV
     modeList[i] = modeV
     if(i==0):
         dModeList[i] = modeList[i]
@@ -41,11 +40,30 @@ for i in range(inputData.shape[0]):
 
     # print(inputData[i])
 
-newMinV = inputData.min()
-newMaxV = inputData.max()
-print('每个通道减去众数后，最小值最大值为',newMinV,newMaxV)
-inputDataHistc = torch.histc(torch.from_numpy(inputData).cuda(),min = newMinV,max=newMaxV,bins=int(inputData.max()-inputData.min()+1)).cpu().numpy()
-print('数据分布图为',inputDataHistc)
+print('各个通道的众数',modeList)
+print('众数的前向差分',dModeList)
+huffmanEncodeFunction.huffmanEncode(bitStream, dModeList)
+zCode = []
+for i in range(inputData.shape[0]):
+    zCode.extend((inputData[i].flatten()[huffmanTable.zigzagOrder]).tolist())
+
+huffmanEncodeFunction.runValueHuffmanEncode(bitStream, numpy.asarray(zCode))
+outputFile = open('./output/outputFile.b', 'wb+')
+# write encoded data
+bitLength = bitStream.__len__()
+filledNum = 8 - bitLength % 8
+if(filledNum!=0):
+    bitStream.write(numpy.ones([filledNum]).tolist(),bool) # 补全为字节（b的数量应该是8整数倍）
+sosBytes = bitStream.read(bytes)
+for i in range(len(sosBytes)):
+    outputFile.write(bytes([sosBytes[i]]))
+    if(sosBytes[i]==255):
+        outputFile.write(bytes([0])) # FF to FF 00
+
+
+outputFile.close()
+
+'''
 max8startPos = 0
 max8 = 0
 for i in range(inputDataHistc.shape[0]-7):
@@ -56,10 +74,6 @@ for i in range(inputDataHistc.shape[0]-7):
         max8startPos = i
 max8startPos = max8startPos + newMinV
 print('分布最为集中的区间是[',max8startPos,max8startPos+7,']')
-print('各个通道的众数',modeList)
-print('众数的前向差分',dModeList)
-huffmanEncodeFunction.encodeDModeList(bitStream, dModeList)
-
 # 对数据进行截断
 newMinV = max8startPos
 newMaxV = newMinV + 7
@@ -69,6 +83,8 @@ newMinVOffset = newMinV + 3 # 偏移量
 inputData = inputData - newMinVOffset # 将数据全部转换到[-3, 4]
 # 截断后数据都处于[-3, 4]
 print('对数据进行截断、平移到[-3,4]')
+'''
+
 
 
 
