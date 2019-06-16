@@ -226,10 +226,13 @@ for i in range(int(sys.argv[4])):
         img2[img2>255] = 255
         currentMS_SSIM = pytorch_msssim.ms_ssim(img1, img2, data_range=255, size_average=True)
 
+        '''
         if(currentMSEL > 500):
             loss = currentMSEL
         else:
             loss = NLPLLambda * currentNLPL + (1-NLPLLambda) * currentEL
+        '''
+        loss = NLPLLambda * currentNLPL + (1 - NLPLLambda) * currentEL
         #print('NLPL=', currentNLPL.item(), 'EL=',currentEL.item(),'loss=',loss.item())
         if(defMaxLossOfTrainData==0):
             maxLossOfTrainData = loss

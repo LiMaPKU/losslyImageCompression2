@@ -130,7 +130,6 @@ class DecodeNet(nn.Module):
 
 
 
-
 import bmpReader
 '''
 argv:
@@ -150,7 +149,7 @@ if(len(sys.argv)!=8):
           '3: 学习率 Adam默认是1e-3\n'
           '4: 训练次数\n'
           '5: 保存的模型标号\n'
-          '6: λ 训练目标是最小化loss = λ*NLPL + (1-λ)EL 增大λ 则训练目标向质量方向偏移\n'
+          '6: λ 训练目标是最小化loss = λ*MS_SSIM + (1-λ)EL 增大λ 则训练目标向质量方向偏移\n'
           '7: batchSize')
     exit(0)
 
@@ -167,8 +166,8 @@ if(sys.argv[2]=='0'): # 设置是重新开始 还是继续训练
     decNet = DecodeNet().cuda()
     print('create new model')
 else:
-    encNet = torch.load('./models/encNet_' + sys.argv[5] + '.pkl').cuda()
-    decNet = torch.load('./models/decNet_' + sys.argv[5] + '.pkl').cuda()
+    encNet = torch.load('./models/encNet_' + sys.argv[5] + '.pkl', map_location='cuda:'+sys.argv[1]).cuda()
+    decNet = torch.load('./models/decNet_' + sys.argv[5] + '.pkl', map_location='cuda:'+sys.argv[1]).cuda()
     print('read ./models/' + sys.argv[5] + '.pkl')
 
 print(encNet)
@@ -177,7 +176,7 @@ print(decNet)
 
 MSELoss = nn.MSELoss()
 
-NLPLLambda = float(sys.argv[6])
+MS_SSIMLambda = float(sys.argv[6])
 
 optimizer = torch.optim.Adam([{'params':encNet.parameters()},{'params':decNet.parameters()}], lr=float(sys.argv[3]))
 
@@ -200,39 +199,34 @@ for i in range(int(sys.argv[4])):
         decData = decNet(qEncData)
 
         currentMSEL = MSELoss(trainData, decData)
-        if(NLPLLambda==0):
+        if(MS_SSIMLambda==0):
             minV = int(qEncData.min().item())
             maxV = int(qEncData.max().item())
             currentEL = entropyLoss(qEncData, minV, maxV)
-            currentNLPL = torch.zeros_like(currentEL)
+            currentMS_SSIM = torch.zeros_like(currentEL)
 
 
-        elif(NLPLLambda==1):
-            currentNLPL = nlpDistance.NLPLoss(decData, trainData, 6)
-            currentEL = torch.zeros_like(currentNLPL)
+        elif(MS_SSIMLambda==1):
+            currentMS_SSIM = pytorch_msssim.ms_ssim(trainData, decData, data_range=255, size_average=True)
+            currentEL = torch.zeros_like(currentMS_SSIM)
 
         else:
-            currentNLPL = nlpDistance.NLPLoss(decData, trainData, 6)
+            currentMS_SSIM = pytorch_msssim.ms_ssim(trainData, decData, data_range=255, size_average=True)
             minV = int(qEncData.min().item())
             maxV = int(qEncData.max().item())
             currentEL = entropyLoss(qEncData, minV, maxV)
 
-        img1 = trainData.clone()
-        img2 = decData.clone()
-        img1.detach_()
-        img2.detach_()
-        img2[img2<0] = 0
-        img2[img2>255] = 255
-        currentMS_SSIM = pytorch_msssim.ms_ssim(img1, img2, data_range=255, size_average=True)
+
+
+
 
         if(currentMSEL > 500):
             loss = currentMSEL
         else:
-            loss = NLPLLambda * currentNLPL + (1-NLPLLambda) * currentEL
-        #print('NLPL=', currentNLPL.item(), 'EL=',currentEL.item(),'loss=',loss.item())
+            loss = -MS_SSIMLambda * currentMS_SSIM + (1-MS_SSIMLambda) * currentEL
+
         if(defMaxLossOfTrainData==0):
             maxLossOfTrainData = loss
-            maxLossTrainNLPL = currentNLPL
             maxLossTrainEL = currentEL
             maxLossTrainMSEL = currentMSEL
             maxLossTrainMS_SSIM = currentMS_SSIM
@@ -240,7 +234,6 @@ for i in range(int(sys.argv[4])):
         else:
             if(loss>maxLossOfTrainData):
                 maxLossOfTrainData = loss # 保存所有训练样本中的最大损失
-                maxLossTrainNLPL = currentNLPL
                 maxLossTrainEL = currentEL
                 maxLossTrainMSEL = currentMSEL
                 maxLossTrainMS_SSIM = currentMS_SSIM
@@ -252,14 +245,12 @@ for i in range(int(sys.argv[4])):
 
     if (i == 0):
         minLoss = maxLossOfTrainData
-        minLossNLPL = maxLossTrainNLPL
         minLossEL = maxLossTrainEL
         minLossMSEL = maxLossTrainMSEL
         minLossMS_SSIM = maxLossTrainMS_SSIM
     else:
         if (minLoss > maxLossOfTrainData):  # 保存最小loss对应的模型
             minLoss = maxLossOfTrainData
-            minLossNLPL = maxLossTrainNLPL
             minLossEL = maxLossTrainEL
             minLossMSEL = maxLossTrainMSEL
             minLossMS_SSIM = maxLossTrainMS_SSIM
@@ -269,11 +260,8 @@ for i in range(int(sys.argv[4])):
 
     print(sys.argv,end='\n')
     print(i)
-    print('本次训练最大loss=','%.3f'%maxLossOfTrainData.item(),'MSEL=','%.3f'%maxLossTrainMSEL.item(),'NLPL=','%.3f'%maxLossTrainNLPL.item(),'EL=','%.3f'%maxLossTrainEL.item(),'MS_SSIM=','%.3f'%maxLossTrainMS_SSIM.item())
-    print('minLoss=','%.3f'%minLoss.item(),'MSEL=','%.3f'%minLossMSEL.item(),'NLPL=','%.3f'%minLossNLPL.item(),'EL=','%.3f'%minLossEL.item(),'MS_SSIM=','%.3f'%minLossMS_SSIM.item())
-
-
-
+    print('本次训练最大loss=','%.3f'%maxLossOfTrainData.item(),'MSEL=','%.3f'%maxLossTrainMSEL.item(),'EL=','%.3f'%maxLossTrainEL.item(),'MS_SSIM=','%.3f'%maxLossTrainMS_SSIM.item())
+    print('minLoss=','%.3f'%minLoss.item(),'MSEL=','%.3f'%minLossMSEL.item(),'EL=','%.3f'%minLossEL.item(),'MS_SSIM=','%.3f'%minLossMS_SSIM.item())
 
 
 

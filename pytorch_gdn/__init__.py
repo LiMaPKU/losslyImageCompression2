@@ -7,8 +7,7 @@ from torch.autograd import Function
 
 class LowerBound(Function):
     def forward(ctx, inputs, bound):
-        b = torch.ones(inputs.size()).cuda() * bound
-        b = b.to(inputs.device)
+        b = torch.ones_like(inputs) * bound
         ctx.save_for_backward(inputs, b)
         return torch.max(inputs, b)
 
@@ -43,7 +42,7 @@ class GDN(nn.Module):
 
     def build(self, ch):
         self.pedestal = self.reparam_offset ** 2
-        self.beta_bound = (self.beta_min + self.reparam_offset ** 2) ** .5
+        self.beta_bound = ((self.beta_min + self.reparam_offset ** 2) ** .5)
         self.gamma_bound = self.reparam_offset
 
         # Create beta param
@@ -57,6 +56,8 @@ class GDN(nn.Module):
         gamma = torch.sqrt(g)
 
         self.gamma = nn.Parameter(gamma.cuda())
+        self.gamma_bound = self.gamma_bound.cuda()
+        self.beta_bound = self.beta_bound.cuda()
         self.pedestal = self.pedestal.cuda()
 
     def forward(self, inputs):
@@ -69,11 +70,13 @@ class GDN(nn.Module):
         _, ch, _, _ = inputs.size()
 
         # Beta bound and reparam
-        beta = LowerBound()(self.beta, self.beta_bound)
+
+        beta = LowerBound()(self.beta, self.beta_bound.cuda())
         beta = beta ** 2 - self.pedestal
 
         # Gamma bound and reparam
-        gamma = LowerBound()(self.gamma, self.gamma_bound)
+
+        gamma = LowerBound()(self.gamma, self.gamma_bound.cuda())
         gamma = gamma ** 2 - self.pedestal
         gamma = gamma.view(ch, ch, 1, 1)
 

@@ -167,8 +167,8 @@ if(sys.argv[2]=='0'): # 设置是重新开始 还是继续训练
     decNet = DecodeNet().cuda()
     print('create new model')
 else:
-    encNet = torch.load('./models/encNet_' + sys.argv[5] + '.pkl').cuda()
-    decNet = torch.load('./models/decNet_' + sys.argv[5] + '.pkl').cuda()
+    encNet = torch.load('./models/encNet_' + sys.argv[5] + '.pkl', map_location='cuda:'+sys.argv[1]).cuda()
+    decNet = torch.load('./models/decNet_' + sys.argv[5] + '.pkl', map_location='cuda:'+sys.argv[1]).cuda()
     print('read ./models/' + sys.argv[5] + '.pkl')
 
 print(encNet)
@@ -217,18 +217,12 @@ for i in range(int(sys.argv[4])):
             maxV = int(qEncData.max().item())
             currentEL = entropyLoss(qEncData, minV, maxV)
 
-        img1 = trainData.clone()
-        img2 = decData.clone()
-        img1.detach_()
-        img2.detach_()
-        img2[img2<0] = 0
-        img2[img2>255] = 255
-        currentMS_SSIM = pytorch_msssim.ms_ssim(img1, img2, data_range=255, size_average=True)
 
-        if(currentMSEL > 500):
-            loss = currentMSEL
-        else:
-            loss = NLPLLambda * currentNLPL + (1-NLPLLambda) * currentEL
+
+        currentMS_SSIM = pytorch_msssim.ms_ssim(trainData, decData, data_range=255, size_average=True)
+
+
+        loss = -NLPLLambda * currentMS_SSIM + (1-NLPLLambda) * currentEL
         #print('NLPL=', currentNLPL.item(), 'EL=',currentEL.item(),'loss=',loss.item())
         if(defMaxLossOfTrainData==0):
             maxLossOfTrainData = loss
