@@ -29,11 +29,10 @@ for i in range(inputData.shape[0]):
     zCode.extend((inputData[i].flatten()[zigzagOrder]).tolist())
 zCode = numpy.asarray(zCode)
 
-# 创建霍夫曼编码表
-huffmanTable = huffmanEncodeFunction.createHuffmanTable(zCode)
 bitStream = BitStream()
-for i in range(zCode.shape[0]):
-    bitStream.write(huffmanTable[int(zCode[i])], bool)
+huffmanEncodeFunction.valueHuffmanEncode(zCode, bitStream)
+
+
 
 
 
