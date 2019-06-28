@@ -9,6 +9,7 @@ import sys
 import os
 import pytorch_gdn
 import pytorch_msssim
+import extendMSE
 
 class Quantize(torch.autograd.Function): # 量化函数
     @staticmethod
@@ -23,8 +24,6 @@ class Quantize(torch.autograd.Function): # 量化函数
 
 def quantize(input):
     return Quantize.apply(input)
-
-
 
 
 class EncodeNet(nn.Module):
@@ -182,17 +181,17 @@ for i in range(int(sys.argv[4])):
 
         optimizer.zero_grad()
         encData = encNet(trainData)
-        decData = decNet(encData)
+        qEncData = quantize(encData)
+        decData = decNet(qEncData)
 
         currentMSEL = MSELoss(trainData, decData)
 
         currentMS_SSIM = pytorch_msssim.ms_ssim(trainData, decData, data_range=255, size_average=True)
 
+        currentEdgeMSEL = extendMSE.EdgeMSELoss(trainData, decData)
 
-        if(currentMSEL > 500):
-            loss = currentMSEL
-        else:
-            loss = -currentMS_SSIM
+
+        loss = -currentMS_SSIM
 
 
 
@@ -200,14 +199,16 @@ for i in range(int(sys.argv[4])):
             maxLossOfTrainData = loss
             maxLossTrainMSEL = currentMSEL
             maxLossTrainMS_SSIM = currentMS_SSIM
+            maxLossTrainEdgeMSEL = currentEdgeMSEL
             defMaxLossOfTrainData = 1
         else:
             if(loss>maxLossOfTrainData):
                 maxLossOfTrainData = loss # 保存所有训练样本中的最大损失
                 maxLossTrainMSEL = currentMSEL
                 maxLossTrainMS_SSIM = currentMS_SSIM
+                maxLossTrainEdgeMSEL = currentEdgeMSEL
 
-        loss.backward()
+        currentEdgeMSEL.backward()
         optimizer.step()
         print('%.3f'%loss.item(), ' ', end='')
         sys.stdout.flush()
@@ -216,16 +217,25 @@ for i in range(int(sys.argv[4])):
         minLoss = maxLossOfTrainData
         minLossMSEL = maxLossTrainMSEL
         minLossMS_SSIM = maxLossTrainMS_SSIM
+        minLossEdgeMSEL = maxLossTrainEdgeMSEL
     else:
         if (minLoss > maxLossOfTrainData):  # 保存最小loss对应的模型
             minLoss = maxLossOfTrainData
             minLossMSEL = maxLossTrainMSEL
             minLossMS_SSIM = maxLossTrainMS_SSIM
+            minLossEdgeMSEL = maxLossTrainEdgeMSEL
             torch.save(encNet, './models/encNet_' + sys.argv[5] + '.pkl')
             torch.save(decNet, './models/decNet_' + sys.argv[5] + '.pkl')
             print('save ./models/' + sys.argv[5] + '.pkl')
 
     print(sys.argv,end='\n')
     print(i)
-    print('本次训练最大loss=','%.3f'%maxLossOfTrainData.item(),'MSEL=','%.3f'%maxLossTrainMSEL.item(),'MS_SSIM=','%.3f'%maxLossTrainMS_SSIM.item())
-    print('minLoss=','%.3f'%minLoss.item(),'MSEL=','%.3f'%minLossMSEL.item(),'MS_SSIM=','%.3f'%minLossMS_SSIM.item())
+    print('本次训练最大loss=','%.3f'%maxLossOfTrainData.item(),'MSEL=','%.3f'%maxLossTrainMSEL.item(),'MS_SSIM=','%.3f'%maxLossTrainMS_SSIM.item(),'EdgeMSEL=','%.3f'%maxLossTrainEdgeMSEL.item())
+    print('minLoss=','%.3f'%minLoss.item(),'MSEL=','%.3f'%minLossMSEL.item(),'MS_SSIM=','%.3f'%minLossMS_SSIM.item(),'EdgeMSEL=','%.3f'%minLossEdgeMSEL.item())
+
+
+
+
+
+
+
