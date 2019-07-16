@@ -8,12 +8,15 @@ zigzagOrder = numpy.array([0,1,16,32,17,2,3,18,33,48,64,49,34,19,4,5,20,35,50,65
 numpy.set_printoptions(suppress=True, threshold=numpy.inf, precision=2)
 bitStream = BitStream() # 比特流
 # 读取数据
-inputData = numpy.load('./output/encData.npy').squeeze()
+inputData = numpy.load('./output/output.npy').squeeze()
 minV = inputData.min()
 maxV = inputData.max()
 print('原始数据的最小值最大值分别为',minV,maxV)
 
 
+
+
+'''
 meanList = numpy.zeros(shape=[inputData.shape[0]], dtype=int)  # 保存每个通道的均值
 for i in range(inputData.shape[0]):
     # print('--------',i,'--------')
@@ -23,12 +26,14 @@ for i in range(inputData.shape[0]):
     meanList[i] = meanV
 
 print('各个通道的均值', meanList)
+'''
+
+
 
 zCode = []
 for i in range(inputData.shape[0]):
     zCode.extend((inputData[i].flatten()[zigzagOrder]).tolist())
 zCode = numpy.asarray(zCode)
-
 bitStream = BitStream()
 huffmanEncodeFunction.valueHuffmanEncode(zCode, bitStream)
 

@@ -17,11 +17,34 @@ class edgeMSE(torch.nn.Module):# 带有边缘权重的MSE
         [-0.2357, -0.2774, -0.3162, -0.3333, -0.3162, -0.2774, -0.2357]]).float().unsqueeze(0).unsqueeze(0).cuda()
 
         mse = torch.pow(origin - rebuild, 2)
-        weight = torch.abs(F.conv2d(origin, edgeFilter/20.8451, padding=3))
+        weight = torch.abs(F.conv2d(torch.nn.functional.pad(origin,(3,3,3,3),'replicate'), edgeFilter/20.8451))/255
         wMse = torch.mean(mse*weight)
         return wMse
 
 EdgeMSELoss = edgeMSE()
+
+class edgeMCE(torch.nn.Module):# 带有边缘权重的MCE 比edgeMSE更重视边缘处的损失
+    def __init__(self):
+        super(edgeMCE, self).__init__()
+
+    def forward(ctx, origin, rebuild):
+
+
+        edgeFilter = torch.tensor([
+        [-0.2357, -0.2774, -0.3162, -0.3333, -0.3162, -0.2774, -0.2357],
+        [-0.2774, -0.3536, -0.4472, -0.5000, -0.4472, -0.3536, -0.2774],
+        [-0.3162, -0.4472, -0.7071, -1.0000, -0.7071, -0.4472, -0.3162],
+        [-0.3333, -0.5000, -1.0000, 20.8451, -1.0000, -0.5000, -0.3333],
+        [-0.3162, -0.4472, -0.7071, -1.0000, -0.7071, -0.4472, -0.3162],
+        [-0.2774, -0.3536, -0.4472, -0.5000, -0.4472, -0.3536, -0.2774],
+        [-0.2357, -0.2774, -0.3162, -0.3333, -0.3162, -0.2774, -0.2357]]).float().unsqueeze(0).unsqueeze(0).cuda()
+
+        mce = torch.abs(torch.pow(origin - rebuild, 3))
+        weight = torch.abs(F.conv2d(torch.nn.functional.pad(origin,(3,3,3,3),'replicate'), edgeFilter/20.8451))/255
+        wMce = torch.mean(mce*weight)
+        return wMce
+
+EdgeMCELoss = edgeMCE()
 
 if __name__ == '__main__':  # 如果运行本py文件 就运行main函数
     from PIL import Image
@@ -38,7 +61,7 @@ if __name__ == '__main__':  # 如果运行本py文件 就运行main函数
     exit(0)
     '''
 
-    img = Image.open('./test.bmp').convert('L')
+    img = Image.open('./input2.bmp').convert('L')
     img = numpy.asarray(img).astype(float).reshape([1, 1, 256, 256])
     edgeFilter = torch.tensor([
         [-0.2357, -0.2774, -0.3162, -0.3333, -0.3162, -0.2774, -0.2357],
@@ -49,9 +72,13 @@ if __name__ == '__main__':  # 如果运行本py文件 就运行main函数
         [-0.2774, -0.3536, -0.4472, -0.5000, -0.4472, -0.3536, -0.2774],
         [-0.2357, -0.2774, -0.3162, -0.3333, -0.3162, -0.2774, -0.2357]]).float().unsqueeze(0).unsqueeze(0).cuda()
     img = torch.from_numpy(img).float().cuda()
-    edgeImg = torch.abs(F.conv2d(img, edgeFilter/20.8451, padding=3))
-    print(edgeImg)
-    edgeImg = edgeImg.cpu().numpy().astype(int).reshape([256, 256])
+    img = torch.nn.functional.pad(img,(3,3,3,3),'replicate')
+
+    edgeImg = torch.abs(F.conv2d(img, edgeFilter))
+    print(edgeImg.shape)
+    edgeImg = edgeImg.cpu().detach().numpy().astype(int).reshape([256, 256])
     edgeImg = Image.fromarray(edgeImg.astype('uint8')).convert('L')
     edgeImg.save('./output.bmp')
+
+
 

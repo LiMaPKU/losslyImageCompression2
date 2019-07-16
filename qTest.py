@@ -9,6 +9,9 @@ import sys
 import os
 import pytorch_gdn
 import pytorch_msssim
+import extendMSE
+
+
 class Quantize(torch.autograd.Function): # 量化函数
     @staticmethod
     def forward(ctx, input, qLevel):
@@ -33,7 +36,7 @@ class EncodeNet(nn.Module):
     def __init__(self):
         super(EncodeNet, self).__init__()
 
-        self.conv_channels_up = nn.Conv2d(1, 32, 5, padding=2)
+        self.conv_channels_up = nn.Conv2d(1, 32, 1)
 
         self.conv_down_256_128 = nn.Conv2d(32, 32, 2, 2)
 
@@ -74,7 +77,7 @@ class DecodeNet(nn.Module):
     def __init__(self):
         super(DecodeNet, self).__init__()
 
-        self.tconv_channels_down = nn.ConvTranspose2d(32, 1, 5, padding=2)
+        self.tconv_channels_down = nn.ConvTranspose2d(32, 1, 1)
 
         self.tconv_up_16_32 = nn.ConvTranspose2d(32, 32, 2, 2)
 
@@ -110,39 +113,78 @@ class DecodeNet(nn.Module):
 
 
 
-torch.cuda.set_device(0) # 设置使用哪个显卡
-
-encNet = torch.load('./models/encNet_16.pkl', map_location='cuda:0').cuda()
-decNet = torch.load('./models/decNet_16.pkl', map_location='cuda:0').cuda()
-
-MSELoss = nn.MSELoss()
 
 
-img = Image.open('./test.bmp').convert('L')
-inputData = torch.from_numpy(numpy.asarray(img).astype(float).reshape([1, 1, 256, 256])).float().cuda()
+import bmpReader
+'''
+argv:
+1: 使用哪个显卡
+'''
 
-encData = encNet(inputData)
-qEncData = quantize(encData, 4)
-decData = decNet(qEncData / 3)
+torch.cuda.set_device(int(sys.argv[1])) # 设置使用哪个显卡
+batchSize = int(sys.argv[2])
+dReader = bmpReader.datasetReader(batchSize)
 
 
-MSEL = MSELoss(inputData, decData)
-img1 = inputData.clone()
-img2 = decData.clone()
-img1.detach_()
-img2.detach_()
-img2[img2<0] = 0
-img2[img2>255] = 255
-MS_SSIM = pytorch_msssim.ms_ssim(img1, img2, data_range=255, size_average=True)
-print('MSEL=','%.3f'%MSEL.item(), 'MS_SSIM=','%.3f'%MS_SSIM)
-img2 = img2.cpu().numpy().astype(int).reshape([256, 256])
-img2 = Image.fromarray(img2.astype('uint8')).convert('L')
-img2.save('./output/output.bmp')
-img1 = img1.cpu().numpy().astype(int).reshape([256, 256])
-img1 = Image.fromarray(img1.astype('uint8')).convert('L')
-img1.save('./output/input.bmp')
+encNet = torch.load('./models/encNet_13_5.pkl', map_location='cuda:'+sys.argv[1]).cuda().eval()
+decNet = torch.load('./models/decNet_13_5.pkl', map_location='cuda:'+sys.argv[1]).cuda().eval()
 
-numpy.save('./output/output.npy',qEncData.detach().cpu().numpy().astype(int))
+
+trainData = torch.empty([batchSize, 1, 256, 256]).float().cuda().requires_grad_(False)
+
+
+'''
+比较量化的ssim 以及获取数据分布使用的代码
+for i in range(1, 256):
+
+    for j in range(16): # 每16批 当作一个训练单元 统计这16批数据的表现
+        for k in range(batchSize):
+            trainData[k] = torch.from_numpy(dReader.readImg()).float().cuda()
+
+        encData = encNet(trainData)
+        qEncData = quantize(encData, i)
+        #dataHistc = torch.histc(qEncData, min=0, max=i-1, bins=i)
+        decData = decNet(qEncData / (i-1))
+
+        currentMS_SSIM = pytorch_msssim.ms_ssim(trainData, decData, data_range=255, size_average=True)
+        if(j==0):
+            sumMS_SSIM = currentMS_SSIM.item()
+            #sumDataHistc = dataHistc
+        else:
+            sumMS_SSIM = sumMS_SSIM + currentMS_SSIM.item()
+            #sumDataHistc = sumDataHistc + dataHistc
+
+    #print(i, (sumDataHistc.float()/sumDataHistc.sum()).detach().cpu().numpy())
+    print(i, sumMS_SSIM/16)
+'''
+
+
+cList = []
+for i in range(-1, 32):
+    for j in range(16):  # 每16批 当作一个训练单元 统计这16批数据的表现
+        for k in range(batchSize):
+            trainData[k] = torch.from_numpy(dReader.readImg()).float().cuda()
+
+        encData = encNet(trainData)
+        if(i>=0):
+            encData[:,i].zero_() # 设置i通道为0
+        qEncData = quantize(encData, 256)
+        decData = decNet(qEncData / 255)
+        currentMS_SSIM = pytorch_msssim.ms_ssim(trainData, decData, data_range=255, size_average=True)
+
+        if (j == 0):
+            sumMS_SSIM = currentMS_SSIM.item()
+        else:
+            sumMS_SSIM = sumMS_SSIM + currentMS_SSIM.item()
+
+    print(i, sumMS_SSIM / 16)
+    cList.append((i, float(sumMS_SSIM) / 16))
+
+
+cList.sort(key=lambda x:x[1])
+for item in cList:
+    print(item)
+
 
 
 

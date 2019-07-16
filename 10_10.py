@@ -25,10 +25,9 @@ class Quantize(torch.autograd.Function): # 量化函数
 def quantize(input):
     return Quantize.apply(input)
 
-
-class EncodeNet(nn.Module):
+class EncodeNet1(nn.Module):
     def __init__(self):
-        super(EncodeNet, self).__init__()
+        super(EncodeNet1, self).__init__()
 
         self.conv_channels_up = nn.Conv2d(1, 64, 1)
 
@@ -61,9 +60,9 @@ class EncodeNet(nn.Module):
 
 
 
-class DecodeNet(nn.Module):
+class DecodeNet1(nn.Module):
     def __init__(self):
-        super(DecodeNet, self).__init__()
+        super(DecodeNet1, self).__init__()
 
         self.tconv_channels_down = nn.ConvTranspose2d(64, 1, 1)
 
@@ -92,6 +91,79 @@ class DecodeNet(nn.Module):
 
 
 
+class EncodeNet2(nn.Module):
+    def __init__(self):
+        super(EncodeNet2, self).__init__()
+
+        self.conv_channels_up = nn.Conv2d(1, 64, 1)
+
+        self.conv_down_256_128 = nn.Conv2d(64, 64, 2, 2)
+        self.conv_down_128_64 = nn.Conv2d(64, 64, 2, 2)
+        self.conv_down_64_32 = nn.Conv2d(64, 64, 2, 2)
+        self.conv_down_32_16 = nn.Conv2d(64, 64, 2, 2)
+        self.conv_down_16_8 = nn.Conv2d(64, 64, 2, 2)
+
+
+        self.gdn_down_256_128 = pytorch_gdn.GDN(64)
+        self.gdn_down_128_64 = pytorch_gdn.GDN(64)
+        self.gdn_down_64_32 = pytorch_gdn.GDN(64)
+        self.gdn_down_32_16 = pytorch_gdn.GDN(64)
+        self.gdn_down_16_8 = pytorch_gdn.GDN(64)
+
+    def forward(self, x):
+
+        x1 = F.leaky_relu(self.conv_channels_up(x))
+
+        x2 = self.gdn_down_256_128(F.leaky_relu(self.conv_down_256_128(x1)))
+
+        x3 = self.gdn_down_128_64(F.leaky_relu(self.conv_down_128_64(x2)))
+
+        x4 = self.gdn_down_64_32(F.leaky_relu(self.conv_down_64_32(x3)))
+
+        x5 = self.gdn_down_32_16(F.leaky_relu(self.conv_down_32_16(x4)))
+
+        x6 = self.gdn_down_16_8(F.leaky_relu(self.conv_down_16_8(x5)))
+
+        return x6
+
+
+
+
+
+
+
+class DecodeNet2(nn.Module):
+    def __init__(self):
+        super(DecodeNet2, self).__init__()
+
+        self.tconv_channels_down = nn.ConvTranspose2d(64, 1, 1)
+
+        self.tconv_up_8_16 = nn.ConvTranspose2d(64, 64, 2, 2)
+        self.tconv_up_16_32 = nn.ConvTranspose2d(64, 64, 2, 2)
+        self.tconv_up_32_64 = nn.ConvTranspose2d(64, 64, 2, 2)
+        self.tconv_up_64_128 = nn.ConvTranspose2d(64, 64, 2, 2)
+        self.tconv_up_128_256 = nn.ConvTranspose2d(64, 64, 2, 2)
+
+        self.igdn_up_8_16 = pytorch_gdn.GDN(64, True)
+        self.igdn_up_16_32 = pytorch_gdn.GDN(64, True)
+        self.igdn_up_32_64 = pytorch_gdn.GDN(64, True)
+        self.igdn_up_64_128 = pytorch_gdn.GDN(64, True)
+        self.igdn_up_128_256 = pytorch_gdn.GDN(64, True)
+
+    def forward(self, x):
+        x5 = F.leaky_relu(self.tconv_up_8_16(self.igdn_up_8_16(x)))
+
+        x4 = F.leaky_relu(self.tconv_up_16_32(self.igdn_up_16_32(x5)))
+
+        x3 = F.leaky_relu(self.tconv_up_32_64(self.igdn_up_32_64(x4)))
+
+        x2 = F.leaky_relu(self.tconv_up_64_128(self.igdn_up_64_128(x3)))
+
+        x1 = F.leaky_relu(self.tconv_up_128_256(self.igdn_up_128_256(x2)))
+
+        y = F.leaky_relu(self.tconv_channels_down(x1))
+
+        return y
 
 
 
@@ -124,10 +196,10 @@ torch.cuda.set_device(int(sys.argv[1])) # 设置使用哪个显卡
 
 
 if(sys.argv[2]=='0'): # 设置是重新开始 还是继续训练
-    encNet1 = EncodeNet().cuda()
-    decNet1 = DecodeNet().cuda()
-    encNet2 = EncodeNet().cuda()
-    decNet2 = DecodeNet().cuda()
+    encNet1 = EncodeNet1().cuda()
+    decNet1 = DecodeNet1().cuda()
+    encNet2 = EncodeNet2().cuda()
+    decNet2 = DecodeNet2().cuda()
     print('create new model')
 else:
     encNet1 = torch.load('./models/encNet1_' + sys.argv[5] + '.pkl', map_location='cuda:'+sys.argv[1]).cuda()

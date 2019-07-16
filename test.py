@@ -1,14 +1,9 @@
-import torch
-import torch.nn.functional as F
+def binSearch(L, R):
+    M = (L + R)//2
+    if(M==L or M==R):
+        return 0
+    print('[',L,R,']','区间长度',R-L+1)
+    binSearch(L, M)
+    binSearch(M+1, R)
 
-downFilter = torch.ones([2,2]).float().unsqueeze(0).unsqueeze(0).cuda()/4
-upFilter = torch.ones([2,2]).float().unsqueeze(0).unsqueeze(0).cuda()
-x = torch.randint(high=10,size=[1,1,4,4]).float().cuda()
-
-y = F.conv2d(x, downFilter, stride=2)
-print(x)
-print(y)
-
-y = F.conv_transpose2d(y, upFilter, stride=2)
-print(y)
-
+binSearch(0, 255)

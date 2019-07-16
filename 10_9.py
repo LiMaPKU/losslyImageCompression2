@@ -36,14 +36,17 @@ class EncodeNet(nn.Module):
         self.conv_down_128_64 = nn.Conv2d(64, 64, 2, 2)
         self.conv_down_64_32 = nn.Conv2d(64, 64, 2, 2)
         self.conv_down_32_16 = nn.Conv2d(64, 64, 2, 2)
+        self.conv_down_16_8 = nn.Conv2d(64, 64, 2, 2)
 
         self.gdn_down_256_128 = pytorch_gdn.GDN(64)
         self.gdn_down_128_64 = pytorch_gdn.GDN(64)
         self.gdn_down_64_32 = pytorch_gdn.GDN(64)
         self.gdn_down_32_16 = pytorch_gdn.GDN(64)
+        self.gdn_down_16_8 = pytorch_gdn.GDN(64)
+
+
 
     def forward(self, x):
-
         x1 = F.leaky_relu(self.conv_channels_up(x))
 
         x2 = self.gdn_down_256_128(F.leaky_relu(self.conv_down_256_128(x1)))
@@ -51,10 +54,12 @@ class EncodeNet(nn.Module):
         x3 = self.gdn_down_128_64(F.leaky_relu(self.conv_down_128_64(x2)))
 
         x4 = self.gdn_down_64_32(F.leaky_relu(self.conv_down_64_32(x3)))
-        y4 = self.gdn_down_32_16(F.leaky_relu(self.conv_down_32_16(x4)))
 
-        return y4
+        x5 = self.gdn_down_32_16(F.leaky_relu(self.conv_down_32_16(x4)))
 
+        x6 = self.gdn_down_16_8(F.leaky_relu(self.conv_down_16_8(x5)))
+
+        return x6
 
 
 
@@ -67,18 +72,22 @@ class DecodeNet(nn.Module):
 
         self.tconv_channels_down = nn.ConvTranspose2d(64, 1, 1)
 
+        self.tconv_up_8_16 = nn.ConvTranspose2d(64, 64, 2, 2)
         self.tconv_up_16_32 = nn.ConvTranspose2d(64, 64, 2, 2)
         self.tconv_up_32_64 = nn.ConvTranspose2d(64, 64, 2, 2)
         self.tconv_up_64_128 = nn.ConvTranspose2d(64, 64, 2, 2)
         self.tconv_up_128_256 = nn.ConvTranspose2d(64, 64, 2, 2)
 
+        self.igdn_up_8_16 = pytorch_gdn.GDN(64, True)
         self.igdn_up_16_32 = pytorch_gdn.GDN(64, True)
         self.igdn_up_32_64 = pytorch_gdn.GDN(64, True)
         self.igdn_up_64_128 = pytorch_gdn.GDN(64, True)
         self.igdn_up_128_256 = pytorch_gdn.GDN(64, True)
 
     def forward(self, x):
-        x4 = F.leaky_relu(self.tconv_up_16_32(self.igdn_up_16_32(x)))
+        x5 = F.leaky_relu(self.tconv_up_8_16(self.igdn_up_8_16(x)))
+
+        x4 = F.leaky_relu(self.tconv_up_16_32(self.igdn_up_16_32(x5)))
 
         x3 = F.leaky_relu(self.tconv_up_32_64(self.igdn_up_32_64(x4)))
 
@@ -86,9 +95,9 @@ class DecodeNet(nn.Module):
 
         x1 = F.leaky_relu(self.tconv_up_128_256(self.igdn_up_128_256(x2)))
 
-        x = F.leaky_relu(self.tconv_channels_down(x1))
+        y = F.leaky_relu(self.tconv_channels_down(x1))
 
-        return x
+        return y
 
 
 
@@ -165,7 +174,7 @@ for i in range(int(sys.argv[4])):
         currentMS_SSIM1 = pytorch_msssim.ms_ssim(trainData, decData1, data_range=255, size_average=True)
         currentEdgeMSE1 = extendMSE.EdgeMSELoss(trainData, decData1)
 
-        loss1 = -currentMS_SSIM1
+        loss1 = MSELoss(trainData, decData1)
 
         loss1.backward()
         optimizer1.step()
@@ -175,7 +184,8 @@ for i in range(int(sys.argv[4])):
         qEncData1 = quantize(encData1)
         decData1 = decNet1(qEncData1)
         encData2 = encNet2(decData1)
-        decData2 = decNet2(encData2)
+        qEncData2 = quantize(encData2)
+        decData2 = decNet2(qEncData2)
         loss2 = MSELoss(trainData - decData1, decData2)
         loss2.backward()
         optimizer2.step()

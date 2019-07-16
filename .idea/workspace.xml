@@ -3,10 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="6a1099a8-8fdc-46a6-8af9-a3e50f324907" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/huffmanEncodeFunction.py" beforeDir="false" afterPath="$PROJECT_DIR$/huffmanEncodeFunction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/10.docx" beforeDir="false" afterPath="$PROJECT_DIR$/10.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/10_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/10_1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extendMSE.py" beforeDir="false" afterPath="$PROJECT_DIR$/extendMSE.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jpegTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/jpegTest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/npyHuffmanEncoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/npyHuffmanEncoder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/output.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/encData.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/jpg.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/output/jpg.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/output.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/output/output.bmp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/outputFile.b" beforeDir="false" afterPath="$PROJECT_DIR$/output/outputFile.b" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/readme.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_encoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_encoder.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,34 +25,46 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bmpReader.py">
+        <entry file="file://$PROJECT_DIR$/17.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="3" selection-start-line="3" selection-end-line="3" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="4123">
+              <caret line="228" column="76" selection-start-line="228" selection-start-column="76" selection-end-line="228" selection-end-column="76" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/imageResize.py">
+        <entry file="file://$PROJECT_DIR$/17_3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="11" column="49" selection-start-line="11" selection-start-column="49" selection-end-line="11" selection-end-column="49" />
+            <state relative-caret-position="3667">
+              <caret line="204" column="48" lean-forward="true" selection-start-line="204" selection-start-column="48" selection-end-line="204" selection-end-column="48" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/npyHuffmanEncoder.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/17_4.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="32" column="23" selection-start-line="32" selection-start-column="23" selection-end-line="32" selection-end-column="23" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="19">
+              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/17_1.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3439">
+              <caret line="192" selection-start-line="192" selection-end-line="231" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/17_2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="55">
+              <caret line="164" selection-start-line="164" selection-end-line="220" selection-end-column="76" />
             </state>
           </provider>
         </entry>
@@ -52,19 +72,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/huffmanEncodeFunction.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="134" column="78" selection-start-line="134" selection-start-column="78" selection-end-line="134" selection-end-column="78" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testEL.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="190">
+              <caret line="105" column="32" selection-start-line="105" selection-start-column="23" selection-end-line="105" selection-end-column="32" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -75,12 +84,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_encoder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1900">
-              <caret line="110" column="10" lean-forward="true" selection-start-line="110" selection-end-line="111" />
+            <state relative-caret-position="233">
+              <caret line="125" column="29" selection-start-line="125" selection-start-column="29" selection-end-line="125" selection-end-column="29" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <element signature="e#260#461#0" />
-                <element signature="e#488#516#0" />
               </folding>
             </state>
           </provider>
@@ -89,11 +96,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/jpegTest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="13" column="40" selection-start-line="13" selection-start-column="40" selection-end-line="13" selection-end-column="40" />
+            <state relative-caret-position="247">
+              <caret line="13" column="39" selection-start-line="13" selection-start-column="39" selection-end-line="13" selection-end-column="39" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/16.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="872">
+              <caret line="219" column="76" selection-start-line="219" selection-start-column="76" selection-end-line="219" selection-end-column="76" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/19.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="266">
+              <caret line="175" column="40" selection-start-line="175" selection-start-column="40" selection-end-line="175" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -109,15 +134,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>SL</find>
-      <find>MSE</find>
-      <find>NLPLLOSS</find>
-      <find>128, 128</find>
-      <find>1, 256</find>
-      <find>pytorch_gdn.GDN(256</find>
-      <find>1, 64</find>
-      <find>pytorch_gdn.GDN(64,</find>
-      <find>cuda</find>
       <find>NLPL</find>
       <find>inputDataHistic</find>
       <find>^p^p</find>
@@ -139,6 +155,15 @@
       <find>append</find>
       <find>-46</find>
       <find>-7</find>
+      <find>dread</find>
+      <find>dreader</find>
+      <find>trainData</find>
+      <find>conv1</find>
+      <find>defMeanLossOfTrainData</find>
+      <find>iDa</find>
+      <find>nn.BatchNorm2d(32)</find>
+      <find>nn.ConvTranspose2d(32, 32</find>
+      <find>pytorch_gdn.GDN(512</find>
     </findStrings>
     <replaceStrings>
       <replace>3, padding=1</replace>
@@ -157,8 +182,13 @@
       <replace>edgeMSEL</replace>
       <replace>EdgeMSEL</replace>
       <replace>nn.ConvTranspose2d(128, 128</replace>
-      <replace>nn.ConvTranspose2d(16, 16</replace>
       <replace>conv64_</replace>
+      <replace>conv3</replace>
+      <replace>defSumLossOfTrainData</replace>
+      <replace>nn.BatchNorm2d(64)</replace>
+      <replace>nn.ConvTranspose2d(64, 64</replace>
+      <replace>nn.ConvTranspose2d(16, 16</replace>
+      <replace>pytorch_gdn.GDN(256</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -167,57 +197,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/pytorch_msssim/__init__.py" />
-        <option value="$PROJECT_DIR$/5_2.py" />
-        <option value="$PROJECT_DIR$/5_3_4.py" />
-        <option value="$PROJECT_DIR$/5_3.py" />
-        <option value="$PROJECT_DIR$/5.py" />
-        <option value="$PROJECT_DIR$/5_1.py" />
-        <option value="$PROJECT_DIR$/5_3_3.py" />
-        <option value="$PROJECT_DIR$/6_3_1.py" />
-        <option value="$PROJECT_DIR$/5_3_1.py" />
-        <option value="$PROJECT_DIR$/5_4.py" />
-        <option value="$PROJECT_DIR$/6_5.py" />
-        <option value="$PROJECT_DIR$/6_6.py" />
-        <option value="$PROJECT_DIR$/6_3_encoder.py" />
-        <option value="$PROJECT_DIR$/pytorch_gdn/__init__.py" />
-        <option value="$PROJECT_DIR$/8.py" />
-        <option value="$PROJECT_DIR$/6_4.py" />
-        <option value="$PROJECT_DIR$/6_3_2.py" />
-        <option value="$PROJECT_DIR$/6_1.py" />
-        <option value="$PROJECT_DIR$/6_3_3.py" />
-        <option value="$PROJECT_DIR$/6_3_4.py" />
-        <option value="$PROJECT_DIR$/6_2.py" />
-        <option value="$PROJECT_DIR$/6_3_5.py" />
-        <option value="$PROJECT_DIR$/6_3_6.py" />
-        <option value="$PROJECT_DIR$/7.py" />
-        <option value="$PROJECT_DIR$/7_1.py" />
-        <option value="$PROJECT_DIR$/6_3_8.py" />
-        <option value="$PROJECT_DIR$/huffmanTable.py" />
-        <option value="$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/pyhuffman/pyhuffman.py" />
-        <option value="$PROJECT_DIR$/6_3.py" />
-        <option value="$PROJECT_DIR$/6_3_7.py" />
-        <option value="$PROJECT_DIR$/freR.py" />
-        <option value="$PROJECT_DIR$/bmpReader.py" />
-        <option value="$PROJECT_DIR$/6_3_9.py" />
-        <option value="$PROJECT_DIR$/extendMSE.py" />
-        <option value="$PROJECT_DIR$/6_3_10.py" />
-        <option value="$PROJECT_DIR$/10.py" />
-        <option value="$PROJECT_DIR$/10_2.py" />
-        <option value="$PROJECT_DIR$/9.py" />
-        <option value="$PROJECT_DIR$/6_3_11.py" />
+        <option value="$PROJECT_DIR$/10_8.py" />
+        <option value="$PROJECT_DIR$/10_9.py" />
+        <option value="$PROJECT_DIR$/10_10.py" />
+        <option value="$PROJECT_DIR$/10_7.py" />
+        <option value="$PROJECT_DIR$/11.py" />
+        <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/10_1.py" />
-        <option value="$PROJECT_DIR$/10_3.py" />
-        <option value="$PROJECT_DIR$/10_4.py" />
-        <option value="$PROJECT_DIR$/10_5.py" />
-        <option value="$PROJECT_DIR$/10_6.py" />
-        <option value="$PROJECT_DIR$/imageResize.py" />
-        <option value="$PROJECT_DIR$/test_encoder.py" />
-        <option value="$PROJECT_DIR$/arithmeticEncodeFunction.py" />
-        <option value="$PROJECT_DIR$/npyArithmeticEncoder.py" />
-        <option value="$PROJECT_DIR$/jpegTest.py" />
+        <option value="$PROJECT_DIR$/10_12.py" />
+        <option value="$PROJECT_DIR$/12_2.py" />
+        <option value="$PROJECT_DIR$/10_11.py" />
+        <option value="$PROJECT_DIR$/12.py" />
+        <option value="$PROJECT_DIR$/12_1.py" />
+        <option value="$PROJECT_DIR$/12_3.py" />
+        <option value="$PROJECT_DIR$/12_4.py" />
+        <option value="$PROJECT_DIR$/12_5.py" />
+        <option value="$PROJECT_DIR$/12_6.py" />
+        <option value="$PROJECT_DIR$/13_1.py" />
+        <option value="$PROJECT_DIR$/13_2.py" />
+        <option value="$PROJECT_DIR$/13_3.py" />
+        <option value="$PROJECT_DIR$/13.py" />
+        <option value="$PROJECT_DIR$/12_7.py" />
+        <option value="$PROJECT_DIR$/12_0.py" />
+        <option value="$PROJECT_DIR$/extendMSE.py" />
+        <option value="$PROJECT_DIR$/13_4.py" />
+        <option value="$PROJECT_DIR$/12_8.py" />
+        <option value="$PROJECT_DIR$/13_5.py" />
+        <option value="$PROJECT_DIR$/13_6.py" />
+        <option value="$PROJECT_DIR$/13_7.py" />
+        <option value="$PROJECT_DIR$/14_1_3.py" />
+        <option value="$PROJECT_DIR$/iQuantizer.py" />
+        <option value="$PROJECT_DIR$/13_8.py" />
+        <option value="$PROJECT_DIR$/15_3.py" />
+        <option value="$PROJECT_DIR$/15_2.py" />
+        <option value="$PROJECT_DIR$/15_1.py" />
+        <option value="$PROJECT_DIR$/qTest.py" />
+        <option value="$PROJECT_DIR$/16_1.py" />
+        <option value="$PROJECT_DIR$/16_2.py" />
+        <option value="$PROJECT_DIR$/16_3.py" />
+        <option value="$PROJECT_DIR$/14_1_1.py" />
+        <option value="$PROJECT_DIR$/14_1_2.py" />
         <option value="$PROJECT_DIR$/npyHuffmanEncoder.py" />
-        <option value="$PROJECT_DIR$/huffmanEncodeFunction.py" />
+        <option value="$PROJECT_DIR$/17.py" />
+        <option value="$PROJECT_DIR$/17_1.py" />
+        <option value="$PROJECT_DIR$/17_2.py" />
+        <option value="$PROJECT_DIR$/17_3.py" />
+        <option value="$PROJECT_DIR$/18.py" />
+        <option value="$PROJECT_DIR$/17_4.py" />
+        <option value="$PROJECT_DIR$/16.py" />
+        <option value="$PROJECT_DIR$/19.py" />
+        <option value="$PROJECT_DIR$/test_encoder.py" />
+        <option value="$PROJECT_DIR$/jpegTest.py" />
       </list>
     </option>
   </component>
@@ -234,6 +264,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -241,16 +272,10 @@
               <item name="losslyImageCompression2" type="b2602c69:ProjectViewProjectNode" />
               <item name="losslyImageCompression2" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="losslyImageCompression2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="losslyImageCompression2" type="462c0819:PsiDirectoryNode" />
-              <item name="pytorch_entropy_loss" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -287,7 +312,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.npyHuffmanEncoder">
+  <component name="RunManager" selected="Python.jpegTest">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="losslyImageCompression2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -354,28 +379,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="npyArithmeticEncoder" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="losslyImageCompression2" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/npyArithmeticEncoder.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="npyHuffmanEncoder" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="losslyImageCompression2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -390,6 +393,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/npyHuffmanEncoder.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="losslyImageCompression2" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -423,17 +448,17 @@
     <list>
       <item itemvalue="Python.test_encoder" />
       <item itemvalue="Python.npyHuffmanEncoder" />
-      <item itemvalue="Python.extendMSE" />
-      <item itemvalue="Python.npyArithmeticEncoder" />
       <item itemvalue="Python.jpegTest" />
+      <item itemvalue="Python.test" />
+      <item itemvalue="Python.extendMSE" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.npyHuffmanEncoder" />
         <item itemvalue="Python.jpegTest" />
-        <item itemvalue="Python.npyArithmeticEncoder" />
+        <item itemvalue="Python.npyHuffmanEncoder" />
         <item itemvalue="Python.test_encoder" />
         <item itemvalue="Python.extendMSE" />
+        <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -504,7 +529,31 @@
       <workItem from="1561635310561" duration="11270000" />
       <workItem from="1561648731646" duration="2212000" />
       <workItem from="1561700069398" duration="7848000" />
-      <workItem from="1561708396535" duration="1546000" />
+      <workItem from="1561708396535" duration="2505000" />
+      <workItem from="1561712417916" duration="155000" />
+      <workItem from="1561718274977" duration="4957000" />
+      <workItem from="1561730074977" duration="852000" />
+      <workItem from="1561768321207" duration="19667000" />
+      <workItem from="1561853423838" duration="2206000" />
+      <workItem from="1561903597039" duration="1610000" />
+      <workItem from="1561965161359" duration="713000" />
+      <workItem from="1561978755303" duration="2567000" />
+      <workItem from="1562028504881" duration="703000" />
+      <workItem from="1562053623755" duration="3985000" />
+      <workItem from="1562111787320" duration="660000" />
+      <workItem from="1562507497913" duration="1503000" />
+      <workItem from="1562814880286" duration="1402000" />
+      <workItem from="1562895172013" duration="9392000" />
+      <workItem from="1562930335367" duration="8581000" />
+      <workItem from="1562978964757" duration="31079000" />
+      <workItem from="1563065307429" duration="839000" />
+      <workItem from="1563070729166" duration="11949000" />
+      <workItem from="1563152307682" duration="14217000" />
+      <workItem from="1563195175138" duration="5378000" />
+      <workItem from="1563237290706" duration="16418000" />
+      <workItem from="1563271746159" duration="4785000" />
+      <workItem from="1563281220083" duration="616000" />
+      <workItem from="1563282500189" duration="1810000" />
     </task>
     <servers />
   </component>
@@ -514,18 +563,18 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="321038000" />
+    <option name="totallyTimeSpent" value="468041000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18498659" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13941018" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4989339" visible="true" weight="0.37252125" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4989339" visible="true" weight="0.28186968" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -533,9 +582,9 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3286119" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5010661" side_tool="true" weight="0.35140997" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5010661" side_tool="true" weight="0.3555241" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3286119" />
-      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49946696" weight="0.26203966" />
+      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.4989339" weight="0.29985857" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="13" weight="0.3286119" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -549,387 +598,248 @@
     <option name="version" value="1" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/losslyImageCompression2$test_encoder.coverage" NAME="test_encoder Coverage Results" MODIFIED="1561635939094" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/losslyImageCompression2$test_encoder.coverage" NAME="test_encoder Coverage Results" MODIFIED="1563283997244" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/losslyImageCompression2$testEL.coverage" NAME="testEL Coverage Results" MODIFIED="1559797271187" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/losslyImageCompression2$huffmanEncodeFunction.coverage" NAME="huffmanEncodeFunction Coverage Results" MODIFIED="1560691291484" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/losslyImageCompression2$jpegTest.coverage" NAME="jpegTest Coverage Results" MODIFIED="1561705891218" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/losslyImageCompression2$test.coverage" NAME="test Coverage Results" MODIFIED="1560327962204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/losslyImageCompression2$jpegTest.coverage" NAME="jpegTest Coverage Results" MODIFIED="1563284113212" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/losslyImageCompression2$npyArithmeticEncoder.coverage" NAME="npyArithmeticEncoder Coverage Results" MODIFIED="1561637383498" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/losslyImageCompression2$test.coverage" NAME="test Coverage Results" MODIFIED="1562507870343" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/losslyImageCompression2$pytest_in_test_encoder_py.coverage" NAME="pytest in test_encoder.py Coverage Results" MODIFIED="1560575379474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/losslyImageCompression2$extendMSE.coverage" NAME="extendMSE Coverage Results" MODIFIED="1561256467754" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/losslyImageCompression2$extendMSE.coverage" NAME="extendMSE Coverage Results" MODIFIED="1563005036825" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/losslyImageCompression2$npl_test.coverage" NAME="npl_test Coverage Results" MODIFIED="1560301860827" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/losslyImageCompression2$npyHuffmanEncoder.coverage" NAME="npyHuffmanEncoder Coverage Results" MODIFIED="1561709947175" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/losslyImageCompression2$npyHuffmanEncoder.coverage" NAME="npyHuffmanEncoder Coverage Results" MODIFIED="1563284057497" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/losslyImageCompression2$nlpDistance.coverage" NAME="nlpDistance Coverage Results" MODIFIED="1560343316585" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/losslyImageCompression2$3.coverage" NAME="3 Coverage Results" MODIFIED="1559968770240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/losslyImageCompression2$6_3_encoder.coverage" NAME="6_3_encoder Coverage Results" MODIFIED="1560575158400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/numpy/core/multiarray.py">
+    <entry file="file://$PROJECT_DIR$/12_3.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15751">
-          <caret line="839" column="4" selection-start-line="839" selection-start-column="4" selection-end-line="839" selection-end-column="4" />
+        <state relative-caret-position="323">
+          <caret line="99" column="20" selection-start-line="99" selection-start-column="20" selection-end-line="99" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/numpy/core/numeric.py">
+    <entry file="file://$PROJECT_DIR$/12_4.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58463">
-          <caret line="3077" selection-start-line="3077" selection-end-line="3077" />
+        <state relative-caret-position="245">
+          <caret line="51" column="18" selection-start-line="51" selection-start-column="18" selection-end-line="51" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/torch/nn/modules/container.py">
+    <entry file="file://$PROJECT_DIR$/12_5.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6213">
-          <caret line="334" column="6" selection-start-line="334" selection-start-column="6" selection-end-line="334" selection-end-column="6" />
+        <state relative-caret-position="-325">
+          <caret line="103" column="20" selection-start-line="103" selection-start-column="20" selection-end-line="103" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/6_3_5.py">
+    <entry file="file://$PROJECT_DIR$/12_6.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="273" selection-start-line="273" selection-end-line="273" />
+        <state relative-caret-position="209">
+          <caret line="102" column="20" selection-start-line="102" selection-start-column="20" selection-end-line="102" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/__future__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/3/queue.pyi">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/queue.py">
+    <entry file="file://$PROJECT_DIR$/13_1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="229" selection-start-line="229" selection-end-line="229" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/pyhuffman/pyhuffman.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
+        <state relative-caret-position="278">
+          <caret line="212" column="20" selection-start-line="212" selection-start-column="20" selection-end-line="212" selection-end-column="20" />
           <folding>
-            <element signature="e#290#327#0" expanded="true" />
+            <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/1097148127/bitstream.py">
+    <entry file="file://$PROJECT_DIR$/13_2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="245" column="8" selection-start-line="245" selection-start-column="8" selection-end-line="245" selection-end-column="8" />
+        <state relative-caret-position="95">
+          <caret line="82" column="47" lean-forward="true" selection-start-line="82" selection-start-column="47" selection-end-line="82" selection-end-column="47" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/torch/nn/modules/pooling.py">
+    <entry file="file://$PROJECT_DIR$/testEL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="357" column="8" selection-start-line="357" selection-start-column="8" selection-end-line="357" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/8.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="190" column="99" lean-forward="true" selection-start-line="190" selection-start-column="66" selection-end-line="190" selection-end-column="99" />
+        <state relative-caret-position="-399">
           <folding>
-            <element signature="e#0#21#0" expanded="true" />
+            <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/torch/nn/functional.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="70" column="16" selection-start-line="70" selection-start-column="4" selection-end-line="70" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/output.bmp">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/torch/__init__.pyi">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27683">
-          <caret line="1480" column="4" selection-start-line="1480" selection-start-column="4" selection-end-line="1480" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/6_3_8.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3344">
-          <caret line="190" column="99" selection-start-line="190" selection-start-column="66" selection-end-line="190" selection-end-column="99" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/6_3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3553">
-          <caret line="201" selection-start-line="201" selection-end-line="201" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nlpDistance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1330">
-          <caret line="71" column="16" selection-start-line="58" selection-start-column="4" selection-end-line="71" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/6_3_3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1665">
-          <caret line="264" selection-start-line="264" selection-end-line="264" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/torch/nn/modules/conv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="318" column="36" selection-start-line="318" selection-start-column="28" selection-end-line="318" selection-end-column="36" />
+        <state relative-caret-position="14">
+          <caret line="49" column="88" selection-start-line="49" selection-start-column="76" selection-end-line="49" selection-end-column="88" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/extendMSE.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        <state relative-caret-position="779">
+          <caret line="42" column="111" selection-start-line="42" selection-start-column="17" selection-end-line="42" selection-end-column="111" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/6_3_7.py">
+    <entry file="file://$PROJECT_DIR$/12_0.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2831">
-          <caret line="159" column="99" selection-start-line="159" selection-start-column="99" selection-end-line="159" selection-end-column="99" />
+        <state relative-caret-position="1691">
+          <caret line="100" column="54" selection-start-line="92" selection-start-column="8" selection-end-line="100" selection-end-column="54" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/6_3_9.py">
+    <entry file="file://$PROJECT_DIR$/12_8.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="699">
-          <caret line="210" column="23" selection-start-line="210" selection-start-column="8" selection-end-line="210" selection-end-column="23" />
+        <state relative-caret-position="1368">
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pytorch_gdn/__init__.py">
+    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/torch/nn/modules/linear.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-374">
-          <caret line="28" column="8" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="1216">
+          <caret line="71" column="8" selection-start-line="71" selection-start-column="8" selection-end-line="71" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/freR.py">
+    <entry file="file://$PROJECT_DIR$/12_7.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="36" selection-start-line="4" selection-start-column="36" selection-end-line="4" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="3097">
+          <caret line="174" selection-start-line="174" selection-end-line="174" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/6_3_10.py">
+    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/torch/nn/modules/conv.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1577">
-          <caret line="94" column="59" selection-start-line="94" selection-start-column="59" selection-end-line="94" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/10.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1624">
-          <caret line="151" column="27" selection-start-line="151" selection-start-column="27" selection-end-line="151" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/10_2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="205" column="82" lean-forward="true" selection-start-line="205" selection-start-column="7" selection-end-line="205" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/9.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="205" selection-start-line="205" selection-end-line="205" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="88" column="35" lean-forward="true" selection-start-line="88" selection-end-line="89" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="5016">
+          <caret line="271" column="78" selection-start-line="271" selection-start-column="70" selection-end-line="271" selection-end-column="78" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pytorch_entropy_loss/entropy_loss.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="7" lean-forward="true" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="24" />
+        <state relative-caret-position="456">
+          <caret line="33" column="39" lean-forward="true" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/10_3.py">
+    <entry file="file://$PROJECT_DIR$/13_6.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3553">
-          <caret line="198" column="37" selection-start-line="198" selection-start-column="37" selection-end-line="198" selection-end-column="37" />
+        <state relative-caret-position="3325">
+          <caret line="186" column="8" selection-start-line="186" selection-start-column="8" selection-end-line="186" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/13_7.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2812">
+          <caret line="159" column="22" selection-start-line="159" selection-start-column="22" selection-end-line="159" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/13.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3572">
+          <caret line="199" column="34" selection-start-line="199" selection-start-column="34" selection-end-line="199" selection-end-column="34" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/10_4.py">
+    <entry file="file://$PROJECT_DIR$/13_4.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1596">
-          <caret line="95" column="24" selection-start-line="95" selection-start-column="24" selection-end-line="95" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/torch/nn/modules/batchnorm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3249">
-          <caret line="179" column="6" selection-start-line="179" selection-start-column="6" selection-end-line="179" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/10_1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="178" column="37" lean-forward="true" selection-start-line="173" selection-start-column="7" selection-end-line="178" selection-end-column="37" />
+        <state relative-caret-position="3667">
+          <caret line="204" column="9" selection-start-line="204" selection-start-column="9" selection-end-line="204" selection-end-column="9" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/npyArithmeticEncoder.py">
+    <entry file="file://$PROJECT_DIR$/13_3.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="45" selection-start-line="45" selection-end-line="49" selection-end-column="57" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/arithmeticEncodeFunction.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/10_5.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
-          <caret line="137" column="68" selection-start-line="137" selection-start-column="68" selection-end-line="137" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/10_6.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
-          <caret line="261" column="18" selection-start-line="261" selection-start-column="18" selection-end-line="261" selection-end-column="18" />
+        <state relative-caret-position="3591">
+          <caret line="200" column="8" selection-start-line="200" selection-start-column="8" selection-end-line="200" selection-end-column="8" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/numpy/core/fromnumeric.py">
+    <entry file="file://$PROJECT_DIR$/iQuantizer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15238">
-          <caret line="815" column="4" selection-start-line="815" selection-start-column="4" selection-end-line="815" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/1097148127/numpy/random/mtrand.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38456">
-          <caret line="2028" column="4" selection-start-line="2028" selection-start-column="4" selection-end-line="2028" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/6_3_11.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="70">
-          <caret line="133" lean-forward="true" selection-start-line="133" selection-end-line="133" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/1097148127/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-150">
-          <caret line="4170" column="8" selection-start-line="4170" selection-start-column="8" selection-end-line="4170" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/huffmanTable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bmpReader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        <state relative-caret-position="275">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
           <folding>
-            <element signature="e#0#21#0" expanded="true" />
+            <element signature="e#7#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/imageResize.py">
+    <entry file="file://$PROJECT_DIR$/13_5.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="11" column="49" selection-start-line="11" selection-start-column="49" selection-end-line="11" selection-end-column="49" />
+        <state relative-caret-position="-1159">
+          <caret line="103" selection-start-line="103" selection-end-line="103" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testEL.py">
+    <entry file="file://$PROJECT_DIR$/13_8.py" />
+    <entry file="file://$PROJECT_DIR$/15_3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="205" column="8" selection-start-line="205" selection-start-column="8" selection-end-line="205" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/15_2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="205" column="8" lean-forward="true" selection-start-line="205" selection-start-column="8" selection-end-line="205" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/theano/gof/graph.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="477" column="8" selection-start-line="477" selection-start-column="8" selection-end-line="477" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/torch/__init__.pyi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="1142" column="4" selection-start-line="1142" selection-start-column="4" selection-end-line="1142" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/envs/pytorch-env/Lib/site-packages/numpy/lib/npyio.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="467" column="4" selection-start-line="467" selection-start-column="4" selection-end-line="467" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/15_1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3097">
+          <caret line="174" selection-start-line="174" selection-end-line="176" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nlpDistance.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <folding>
@@ -938,45 +848,173 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_encoder.py">
+    <entry file="file://$PROJECT_DIR$/qTest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1900">
-          <caret line="110" column="10" lean-forward="true" selection-start-line="110" selection-end-line="111" />
+        <state relative-caret-position="3306">
+          <caret line="185" column="14" selection-start-line="185" selection-start-column="14" selection-end-line="185" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/16_1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3154">
+          <caret line="177" selection-start-line="177" selection-end-line="179" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="21" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/14_1_3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1143">
+          <caret line="183" column="16" selection-start-line="183" selection-start-column="16" selection-end-line="183" selection-end-column="16" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <element signature="e#260#461#0" />
-            <element signature="e#488#516#0" />
+            <element signature="e#567#1709#0" />
+            <element signature="e#1749#2961#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/14_1_1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-665">
+          <caret line="7" column="10" lean-forward="true" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/16_2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="14" selection-start-line="14" selection-end-line="116" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/1097148127/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="3159" column="8" selection-start-line="3159" selection-start-column="8" selection-end-line="3159" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/14_1_2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6954">
+          <caret line="377" column="76" selection-start-line="340" selection-start-column="8" selection-end-line="377" selection-end-column="76" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/16_3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6156">
+          <caret line="335" selection-start-line="335" selection-end-line="374" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/npyHuffmanEncoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/18.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/17.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4123">
+          <caret line="228" column="76" selection-start-line="228" selection-start-column="76" selection-end-line="228" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/17_1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3439">
+          <caret line="192" selection-start-line="192" selection-end-line="231" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/17_4.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/17_3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3667">
+          <caret line="204" column="48" lean-forward="true" selection-start-line="204" selection-start-column="48" selection-end-line="204" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/huffmanEncodeFunction.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="105" column="32" selection-start-line="105" selection-start-column="23" selection-end-line="105" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/17_2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="55">
+          <caret line="164" selection-start-line="164" selection-end-line="220" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/19.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="175" column="40" selection-start-line="175" selection-start-column="40" selection-end-line="175" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_encoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="125" column="29" selection-start-line="125" selection-start-column="29" selection-end-line="125" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/jpegTest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="13" column="40" selection-start-line="13" selection-start-column="40" selection-end-line="13" selection-end-column="40" />
+        <state relative-caret-position="247">
+          <caret line="13" column="39" selection-start-line="13" selection-start-column="39" selection-end-line="13" selection-end-column="39" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/huffmanEncodeFunction.py">
+    <entry file="file://$PROJECT_DIR$/16.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="134" column="78" selection-start-line="134" selection-start-column="78" selection-end-line="134" selection-end-column="78" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/npyHuffmanEncoder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="32" column="23" selection-start-line="32" selection-start-column="23" selection-end-line="32" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="872">
+          <caret line="219" column="76" selection-start-line="219" selection-start-column="76" selection-end-line="219" selection-end-column="76" />
         </state>
       </provider>
     </entry>

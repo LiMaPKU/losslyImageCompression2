@@ -11,6 +11,7 @@ import pytorch_gdn
 import pytorch_msssim
 import extendMSE
 
+
 class Quantize(torch.autograd.Function): # 量化函数
     @staticmethod
     def forward(ctx, input):
@@ -25,24 +26,31 @@ class Quantize(torch.autograd.Function): # 量化函数
 def quantize(input):
     return Quantize.apply(input)
 
+def vecNorm(x):
+    return (x - x.min()) / (x.max() - x.min())
 
 class EncodeNet(nn.Module):
     def __init__(self):
         super(EncodeNet, self).__init__()
 
-        self.conv_channels_up = nn.Conv2d(1, 64, 1)
+        self.conv_channels_up = nn.Conv2d(1, 32, 1)
 
-        self.conv_down_256_128 = nn.Conv2d(64, 64, 2, 2)
-        self.conv_down_128_64 = nn.Conv2d(64, 64, 2, 2)
-        self.conv_down_64_32 = nn.Conv2d(64, 64, 2, 2)
-        self.conv_down_32_16 = nn.Conv2d(64, 64, 2, 2)
+        self.conv_down_256_128 = nn.Conv2d(32, 32, 2, 2)
 
-        self.gdn_down_256_128 = pytorch_gdn.GDN(64)
-        self.gdn_down_128_64 = pytorch_gdn.GDN(64)
-        self.gdn_down_64_32 = pytorch_gdn.GDN(64)
-        self.gdn_down_32_16 = pytorch_gdn.GDN(64)
+        self.conv_down_128_64 = nn.Conv2d(32, 32, 2, 2)
+
+        self.conv_down_64_32 = nn.Conv2d(32, 32, 2, 2)
+
+        self.conv_down_32_16 = nn.Conv2d(32, 32, 2, 2)
+
+        self.gdn_down_256_128 = pytorch_gdn.GDN(32)
+        self.gdn_down_128_64 = pytorch_gdn.GDN(32)
+        self.gdn_down_64_32 = pytorch_gdn.GDN(32)
+        self.gdn_down_32_16 = pytorch_gdn.GDN(32)
 
     def forward(self, x):
+
+        x = x / 255
 
         x1 = F.leaky_relu(self.conv_channels_up(x))
 
@@ -51,9 +59,10 @@ class EncodeNet(nn.Module):
         x3 = self.gdn_down_128_64(F.leaky_relu(self.conv_down_128_64(x2)))
 
         x4 = self.gdn_down_64_32(F.leaky_relu(self.conv_down_64_32(x3)))
-        y4 = self.gdn_down_32_16(F.leaky_relu(self.conv_down_32_16(x4)))
 
-        return y4
+        x5 = self.gdn_down_32_16(F.leaky_relu(self.conv_down_32_16(x4)))
+
+        return vecNorm(x5)
 
 
 
@@ -65,20 +74,25 @@ class DecodeNet(nn.Module):
     def __init__(self):
         super(DecodeNet, self).__init__()
 
-        self.tconv_channels_down = nn.ConvTranspose2d(64, 1, 1)
+        self.tconv_channels_down = nn.ConvTranspose2d(32, 1, 1)
 
-        self.tconv_up_16_32 = nn.ConvTranspose2d(64, 64, 2, 2)
-        self.tconv_up_32_64 = nn.ConvTranspose2d(64, 64, 2, 2)
-        self.tconv_up_64_128 = nn.ConvTranspose2d(64, 64, 2, 2)
-        self.tconv_up_128_256 = nn.ConvTranspose2d(64, 64, 2, 2)
+        self.tconv_up_16_32 = nn.ConvTranspose2d(32, 32, 2, 2)
 
-        self.igdn_up_16_32 = pytorch_gdn.GDN(64, True)
-        self.igdn_up_32_64 = pytorch_gdn.GDN(64, True)
-        self.igdn_up_64_128 = pytorch_gdn.GDN(64, True)
-        self.igdn_up_128_256 = pytorch_gdn.GDN(64, True)
+        self.tconv_up_32_64 = nn.ConvTranspose2d(32, 32, 2, 2)
 
-    def forward(self, x):
-        x4 = F.leaky_relu(self.tconv_up_16_32(self.igdn_up_16_32(x)))
+        self.tconv_up_64_128 = nn.ConvTranspose2d(32, 32, 2, 2)
+
+        self.tconv_up_128_256 = nn.ConvTranspose2d(32, 32, 2, 2)
+
+
+        self.igdn_up_16_32 = pytorch_gdn.GDN(32, True)
+        self.igdn_up_32_64 = pytorch_gdn.GDN(32, True)
+        self.igdn_up_64_128 = pytorch_gdn.GDN(32, True)
+        self.igdn_up_128_256 = pytorch_gdn.GDN(32, True)
+
+    def forward(self, x5):
+
+        x4 = F.leaky_relu(self.tconv_up_16_32(self.igdn_up_16_32(x5)))
 
         x3 = F.leaky_relu(self.tconv_up_32_64(self.igdn_up_32_64(x4)))
 
@@ -87,6 +101,8 @@ class DecodeNet(nn.Module):
         x1 = F.leaky_relu(self.tconv_up_128_256(self.igdn_up_128_256(x2)))
 
         x = F.leaky_relu(self.tconv_channels_down(x1))
+
+        x = x * 255
 
         return x
 
@@ -124,16 +140,12 @@ torch.cuda.set_device(int(sys.argv[1])) # 设置使用哪个显卡
 
 
 if(sys.argv[2]=='0'): # 设置是重新开始 还是继续训练
-    encNet1 = EncodeNet().cuda()
-    decNet1 = DecodeNet().cuda()
-    encNet2 = EncodeNet().cuda()
-    decNet2 = DecodeNet().cuda()
+    encNet = EncodeNet().cuda().train()
+    decNet = DecodeNet().cuda().train()
     print('create new model')
 else:
-    encNet1 = torch.load('./models/encNet1_' + sys.argv[5] + '.pkl', map_location='cuda:'+sys.argv[1]).cuda()
-    decNet1 = torch.load('./models/decNet1_' + sys.argv[5] + '.pkl', map_location='cuda:'+sys.argv[1]).cuda()
-    encNet2 = torch.load('./models/encNet2_' + sys.argv[5] + '.pkl', map_location='cuda:'+sys.argv[1]).cuda()
-    decNet2 = torch.load('./models/decNet2_' + sys.argv[5] + '.pkl', map_location='cuda:'+sys.argv[1]).cuda()
+    encNet = torch.load('./models/encNet_' + sys.argv[5] + '.pkl', map_location='cuda:'+sys.argv[1]).cuda().train()
+    decNet = torch.load('./models/decNet_' + sys.argv[5] + '.pkl', map_location='cuda:'+sys.argv[1]).cuda().train()
     print('read ./models/' + sys.argv[5] + '.pkl')
 
 
@@ -141,8 +153,7 @@ else:
 MSELoss = nn.MSELoss()
 
 
-optimizer1 = torch.optim.Adam([{'params':encNet1.parameters()},{'params':decNet1.parameters()}], lr=float(sys.argv[3]))
-optimizer2 = torch.optim.Adam([{'params':encNet2.parameters()},{'params':decNet2.parameters()}], lr=float(sys.argv[3]))
+optimizer = torch.optim.Adam([{'params':encNet.parameters()},{'params':decNet.parameters()}], lr=float(sys.argv[3]))
 
 trainData = torch.empty([batchSize, 1, 256, 256]).float().cuda()
 
@@ -157,73 +168,60 @@ for i in range(int(sys.argv[4])):
         for k in range(batchSize):
             trainData[k] = torch.from_numpy(dReader.readImg()).float().cuda()
 
-        optimizer1.zero_grad()
-        encData1 = encNet1(trainData)
-        qEncData1 = quantize(encData1)
-        decData1 = decNet1(qEncData1)
+        optimizer.zero_grad()
+        encData = encNet(trainData)
+        #qEncData = quantize(encData)
+        decData = decNet(encData)
 
-        currentMS_SSIM1 = pytorch_msssim.ms_ssim(trainData, decData1, data_range=255, size_average=True)
-        currentEdgeMSE1 = extendMSE.EdgeMSELoss(trainData, decData1)
-
-        loss1 = -currentMS_SSIM1
-
-        loss1.backward()
-        optimizer1.step()
-
-        optimizer2.zero_grad()
-        encData1 = encNet1(trainData)
-        qEncData1 = quantize(encData1)
-        decData1 = decNet1(qEncData1)
-        encData2 = encNet2(decData1)
-        decData2 = decNet2(encData2)
-        loss2 = MSELoss(trainData - decData1, decData2)
-        loss2.backward()
-        optimizer2.step()
-
-        decData = decData1 + decData2
         currentMSEL = MSELoss(trainData, decData)
+
         currentMS_SSIM = pytorch_msssim.ms_ssim(trainData, decData, data_range=255, size_average=True)
 
-        if(currentMSEL > 500):
-            loss = currentMSEL
-        else:
-            loss = -currentMS_SSIM
+        #currentEdgeMSEL = extendMSE.EdgeMSELoss(trainData, decData)
 
-        print('[%.3f'%loss1.item(), '%.3f'%loss2.item(), '%.3f'%currentMSEL.item(), '%.3f]'%currentMS_SSIM.item(), end='')
-        sys.stdout.flush()
+        loss = -currentMS_SSIM
+
+
 
 
         if(defMaxLossOfTrainData==0):
             maxLossOfTrainData = loss
             maxLossTrainMSEL = currentMSEL
             maxLossTrainMS_SSIM = currentMS_SSIM
+            #maxLossTrainEdgeMSEL = currentEdgeMSEL
             defMaxLossOfTrainData = 1
         else:
             if(loss>maxLossOfTrainData):
                 maxLossOfTrainData = loss # 保存所有训练样本中的最大损失
                 maxLossTrainMSEL = currentMSEL
                 maxLossTrainMS_SSIM = currentMS_SSIM
+                #maxLossTrainEdgeMSEL = currentEdgeMSEL
 
+        #currentEdgeMSEL.backward()
+        loss.backward()
+        optimizer.step()
+        print('%.3f'%loss.item(), ' ', end='')
+        sys.stdout.flush()
 
     if (i == 0):
         minLoss = maxLossOfTrainData
         minLossMSEL = maxLossTrainMSEL
         minLossMS_SSIM = maxLossTrainMS_SSIM
+        #minLossEdgeMSEL = maxLossTrainEdgeMSEL
     else:
         if (minLoss > maxLossOfTrainData):  # 保存最小loss对应的模型
             minLoss = maxLossOfTrainData
             minLossMSEL = maxLossTrainMSEL
             minLossMS_SSIM = maxLossTrainMS_SSIM
-            torch.save(encNet1, './models/encNet1_' + sys.argv[5] + '.pkl')
-            torch.save(decNet1, './models/decNet1_' + sys.argv[5] + '.pkl')
-            torch.save(encNet2, './models/encNet2_' + sys.argv[5] + '.pkl')
-            torch.save(decNet2, './models/decNet2_' + sys.argv[5] + '.pkl')
+            #minLossEdgeMSEL = maxLossTrainEdgeMSEL
+            torch.save(encNet, './models/encNet_' + sys.argv[5] + '.pkl')
+            torch.save(decNet, './models/decNet_' + sys.argv[5] + '.pkl')
             print('save ./models/' + sys.argv[5] + '.pkl')
-    print(sys.argv, end='\n')
+
+    print(sys.argv,end='\n')
     print(i)
-    print(qEncData1.max().item(), qEncData1.min().item())
     print('本次训练最大loss=','%.3f'%maxLossOfTrainData.item(),'MSEL=','%.3f'%maxLossTrainMSEL.item(),'MS_SSIM=','%.3f'%maxLossTrainMS_SSIM.item())
-    print('minLoss=','%.3f'%minLoss.item(),'MSEL=','%.3f'%minLossMSEL.item(),'MS_SSIM=','%.3f'%minLossMS_SSIM.item())
+    print(encData.max().item(),encData.min().item(),'minLoss=','%.3f'%minLoss.item(),'MSEL=','%.3f'%minLossMSEL.item(),'MS_SSIM=','%.3f'%minLossMS_SSIM.item())
 
 
 
